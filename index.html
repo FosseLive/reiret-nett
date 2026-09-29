@@ -9,14 +9,17 @@
 <link rel="canonical" href="https://reiret.fosselien.no/">
 <meta property="og:title" content="Reiret: svangerskapet uke for uke, for dere begge">
 <meta property="og:description" content="Norsk app for svangerskapet og det første året, for den som er gravid og partneren. Ukens oppgaver, korte guider og verktøy, sjekket mot norske kilder.">
-<meta property="og:image" content="https://reiret.fosselien.no/bilder/landskap-i-dag.webp">
+<meta property="og:image" content="https://reiret.fosselien.no/bilder/deling.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:locale" content="nb_NO">
 <link rel="icon" href="/favicon.png">
 <link rel="apple-touch-icon" href="/ikon.png">
 <link rel="preload" href="/skrift/albert-sans-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/stil.css">
+<script type="module" src="/helt.js"></script>
 </head>
-<body>
+<body class="forside">
 <a class="hopp" href="#innhold">Hopp til innholdet</a>
 <header class="topplinje">
   <a class="merke" href="/"><img src="/bilder/maskot.webp" alt="" width="44" height="44"><span>Reiret</span></a>
@@ -24,39 +27,46 @@
 </header>
 <main id="innhold">
 
-  <section class="helt">
-    <div class="tekst">
-      <h1 class="vis">Svangerskapet, uke for uke. <em>For dere begge.</em></h1>
-      <p class="ingress vis vis-2">Én ting å gjøre hver uke, korte guider om kropp, fødsel og papirer, og verktøy dere faktisk bruker. Skrevet for norsk helsevesen, og alt kan leses opp.</p>
-      <p class="snart vis vis-3"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18" r="1.2" fill="currentColor"/></svg>Kommer til iPhone</p>
+  <section class="helt" aria-labelledby="helt-tittel">
+    <div class="scene">
+      <picture>
+        <source media="(max-aspect-ratio: 4/5)" srcset="/bilder/helt-hoy.webp" width="1728" height="3096">
+        <source media="(min-aspect-ratio: 2/1)" srcset="/bilder/helt-bred.webp" width="3840" height="1629">
+        <img class="maleri" src="/bilder/helt-mellom.webp" width="3840" height="2143" fetchpriority="high" alt="Gouache av et norsk morgenlandskap: en fjord, et rødt hus mellom bjørker, og et rede på en bjørkegren med to fugler og et egg">
+      </picture>
+      <canvas aria-hidden="true"></canvas>
+      <div class="dis" aria-hidden="true"></div>
+      <div class="tekst">
+        <h1 id="helt-tittel" aria-label="Et rede å vente i."><span aria-hidden="true"><span class="linje"><span class="ord"><span style="--i:0">E</span><span style="--i:1">t</span></span> <span class="ord"><span style="--i:2">r</span><span style="--i:3">e</span><span style="--i:4">d</span><span style="--i:5">e</span></span></span> <span class="linje"><span class="ord"><span style="--i:6">å</span></span> <span class="ord"><span style="--i:7">v</span><span style="--i:8">e</span><span style="--i:9">n</span><span style="--i:10">t</span><span style="--i:11">e</span></span> <span class="ord"><span style="--i:12">i</span><span style="--i:13">.</span></span></span></span></h1>
+        <p class="ingress vis">Reiret følger svangerskapet uke for uke, for den som er gravid og for partneren. Norsk, faktasjekket og uten reklame.</p>
+      </div>
+      <p class="snart vis vis-2"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18" r="1.2" fill="currentColor"/></svg>Kommer til iPhone</p>
     </div>
-    <figure><img src="/bilder/landskap-i-dag.webp" alt="Et norsk landskap i gouache: åser, en fjord og et rødt hus i morgenlys" width="928" height="1152"></figure>
   </section>
 
   <section class="uker" aria-labelledby="uker-tittel">
-    <div class="hode">
-      <h2 id="uker-tittel">Ukens bilde</h2>
-      <p>Hver uke har sitt eget bilde av hvor stor babyen er, malt i gouache. Fra en linse i uke 6 til et gresskar ved termin.</p>
+    <div class="hode ton">
+      <h2 id="uker-tittel">Fra linse til gresskar.</h2>
+      <p>Hver uke har sitt eget bilde av hvor stor babyen er, malt i gouache. En linse i uke 6, et gresskar ved termin.</p>
     </div>
     <div class="stripe" tabindex="0" aria-label="Babyens størrelse, uke for uke">
-      <figure><img src="/bilder/uke-06.webp" alt="Gouache av en linse" width="480" height="480" loading="lazy"><figcaption><b>Uke 6</b>Omtrent som en linse</figcaption></figure>
-      <figure><img src="/bilder/uke-10.webp" alt="Gouache av et jordbær" width="480" height="480" loading="lazy"><figcaption><b>Uke 10</b>Omtrent som et jordbær</figcaption></figure>
-      <figure><img src="/bilder/uke-14.webp" alt="Gouache av en sitron" width="480" height="480" loading="lazy"><figcaption><b>Uke 14</b>Omtrent som en sitron</figcaption></figure>
-      <figure><img src="/bilder/uke-18.webp" alt="Gouache av en paprika" width="480" height="480" loading="lazy"><figcaption><b>Uke 18</b>Omtrent som en paprika</figcaption></figure>
-      <figure><img src="/bilder/uke-22.webp" alt="Gouache av en squash" width="480" height="480" loading="lazy"><figcaption><b>Uke 22</b>Omtrent som en squash</figcaption></figure>
-      <figure><img src="/bilder/uke-26.webp" alt="Gouache av et issalathode" width="480" height="480" loading="lazy"><figcaption><b>Uke 26</b>Omtrent som et issalathode</figcaption></figure>
-      <figure><img src="/bilder/uke-30.webp" alt="Gouache av et lite kålhode" width="480" height="480" loading="lazy"><figcaption><b>Uke 30</b>Omtrent som et lite kålhode</figcaption></figure>
-      <figure><img src="/bilder/uke-34.webp" alt="Gouache av en cantaloupemelon" width="480" height="480" loading="lazy"><figcaption><b>Uke 34</b>Omtrent som en cantaloupemelon</figcaption></figure>
-      <figure><img src="/bilder/uke-38.webp" alt="Gouache av en stor kålrot" width="480" height="480" loading="lazy"><figcaption><b>Uke 38</b>Omtrent som en stor kålrot</figcaption></figure>
-      <figure><img src="/bilder/uke-40.webp" alt="Gouache av et gresskar" width="480" height="480" loading="lazy"><figcaption><b>Uke 40</b>Omtrent som et gresskar</figcaption></figure>
+      <figure class="ton" style="--n:0"><img src="/bilder/uke-06.webp" alt="Gouache av en linse" width="480" height="480" loading="lazy"><figcaption><b>Uke 6</b>Omtrent som en linse</figcaption></figure>
+      <figure class="ton" style="--n:1"><img src="/bilder/uke-10.webp" alt="Gouache av et jordbær" width="480" height="480" loading="lazy"><figcaption><b>Uke 10</b>Omtrent som et jordbær</figcaption></figure>
+      <figure class="ton" style="--n:2"><img src="/bilder/uke-14.webp" alt="Gouache av en sitron" width="480" height="480" loading="lazy"><figcaption><b>Uke 14</b>Omtrent som en sitron</figcaption></figure>
+      <figure class="ton" style="--n:3"><img src="/bilder/uke-18.webp" alt="Gouache av en paprika" width="480" height="480" loading="lazy"><figcaption><b>Uke 18</b>Omtrent som en paprika</figcaption></figure>
+      <figure class="ton" style="--n:4"><img src="/bilder/uke-22.webp" alt="Gouache av en squash" width="480" height="480" loading="lazy"><figcaption><b>Uke 22</b>Omtrent som en squash</figcaption></figure>
+      <figure class="ton" style="--n:5"><img src="/bilder/uke-26.webp" alt="Gouache av et issalathode" width="480" height="480" loading="lazy"><figcaption><b>Uke 26</b>Omtrent som et issalathode</figcaption></figure>
+      <figure class="ton" style="--n:6"><img src="/bilder/uke-30.webp" alt="Gouache av et lite kålhode" width="480" height="480" loading="lazy"><figcaption><b>Uke 30</b>Omtrent som et lite kålhode</figcaption></figure>
+      <figure class="ton" style="--n:7"><img src="/bilder/uke-34.webp" alt="Gouache av en cantaloupemelon" width="480" height="480" loading="lazy"><figcaption><b>Uke 34</b>Omtrent som en cantaloupemelon</figcaption></figure>
+      <figure class="ton" style="--n:8"><img src="/bilder/uke-38.webp" alt="Gouache av en stor kålrot" width="480" height="480" loading="lazy"><figcaption><b>Uke 38</b>Omtrent som en stor kålrot</figcaption></figure>
+      <figure class="ton" style="--n:9"><img src="/bilder/uke-40.webp" alt="Gouache av et gresskar" width="480" height="480" loading="lazy"><figcaption><b>Uke 40</b>Omtrent som et gresskar</figcaption></figure>
     </div>
   </section>
 
   <section class="del tone-nype">
     <div class="innhold">
-      <figure><img src="/bilder/a-fortelle-nyheten.webp" alt="Et ultralydbilde ligger på kjøkkenbordet ved siden av en telefon og to kopper, klart til å deles" width="1170" height="874" loading="lazy"></figure>
-      <div>
-        <p class="etikett">Hver uke</p>
+      <figure class="ton"><img src="/bilder/a-fortelle-nyheten.webp" alt="Et ultralydbilde ligger på kjøkkenbordet ved siden av en telefon og to kopper, klart til å deles" width="1170" height="874" loading="lazy"></figure>
+      <div class="ton" style="--n:1">
         <h2>Én ting å gjøre, ikke tjue.</h2>
         <p>Ukens oppgaver er små og konkrete: bestille time, snakke om fødestedet, legge nummeret til fødeavdelingen inn i telefonen. Den ene krysser av, den andre ser det.</p>
         <p>Hver dag kommer et lite punkt i tillegg, til den som er gravid og til partneren.</p>
@@ -67,9 +77,8 @@
 
   <section class="del tone-fjord">
     <div class="innhold">
-      <figure><img src="/bilder/svangerskapskontrollene-i-norge.webp" alt="Et helsekort for gravide og en notatblokk med spørsmål på et bord på helsestasjonen, med to kaffekopper" width="1170" height="874" loading="lazy"></figure>
-      <div>
-        <p class="etikett">Norsk og faktasjekket</p>
+      <figure class="ton"><img src="/bilder/svangerskapskontrollene-i-norge.webp" alt="Et helsekort for gravide og en notatblokk med spørsmål på et bord på helsestasjonen, med to kaffekopper" width="1170" height="874" loading="lazy"></figure>
+      <div class="ton" style="--n:1">
         <h2>Skrevet for norsk helsevesen.</h2>
         <p>Kontrollene hos jordmor, rutineultralyden, søknaden om fødested, foreldrepenger og barnetrygd står slik det gjelder her. Hver tekst er sjekket mot primærkildene, og kildene står i appen.</p>
         <ul class="kilder" aria-label="Kilder"><li>Helsenorge</li><li>Helsedirektoratet</li><li>FHI</li><li>NAV</li><li>Mattilsynet</li></ul>
@@ -79,9 +88,8 @@
 
   <section class="del tone-mose">
     <div class="innhold">
-      <figure><img src="/bilder/parforholdet-nar-dere-blir-tre.webp" alt="Et par går tur med barnevogn på en grusvei i høstlys, med hver sin hånd på håndtaket" width="1170" height="874" loading="lazy"></figure>
-      <div>
-        <p class="etikett">For dere begge</p>
+      <figure class="ton"><img src="/bilder/parforholdet-nar-dere-blir-tre.webp" alt="Et par går tur med barnevogn på en grusvei i høstlys, med hver sin hånd på håndtaket" width="1170" height="874" loading="lazy"></figure>
+      <div class="ton" style="--n:1">
         <h2>Én app, to telefoner.</h2>
         <p>Den som er gravid og partneren får hver sin visning, skrevet til hver av dere. Deler dere, ser dere de samme oppgavene, avtalene, sjekklistene og favorittnavnene.</p>
         <p>Vil du se det den andre ser, er det én bryter unna.</p>
@@ -92,9 +100,8 @@
 
   <section class="del tone-lyng">
     <div class="innhold">
-      <figure><img src="/bilder/kjenn-liv.webp" alt="En gravid kvinne ligger på siden i sofaen med hånden på magen, mens partnerens hånd hviler ved siden av" width="1170" height="874" loading="lazy"></figure>
-      <div>
-        <p class="etikett">Trygghet</p>
+      <figure class="ton"><img src="/bilder/kjenn-liv.webp" alt="En gravid kvinne ligger på siden i sofaen med hånden på magen, mens partnerens hånd hviler ved siden av" width="1170" height="874" loading="lazy"></figure>
+      <div class="ton" style="--n:1">
         <h2>Heller ringe én gang for mye.</h2>
         <p>Kjenn liv hjelper dere å bli kjent med babyens mønster, og rietimeren viser hvor ofte riene kommer. «Ring fødeavdelingen» er alltid ett trykk unna.</p>
         <p>Reiret stiller ingen diagnoser og regner ikke ut når dere skal dra. Det avgjør fødeavdelingen sammen med dere.</p>
@@ -105,8 +112,8 @@
 
   <section class="loefte" aria-labelledby="loefte-tittel">
     <div class="innhold">
-      <img src="/bilder/maskot.webp" alt="Maskoten: to fugler i et rede" width="480" height="480" loading="lazy">
-      <div>
+      <img class="ton" src="/bilder/maskot.webp" alt="Maskoten: to fugler i et rede" width="480" height="480" loading="lazy">
+      <div class="ton" style="--n:1">
         <h2 id="loefte-tittel">Det dere skriver, er deres.</h2>
         <dl>
           <div><dt>På telefonen</dt><dd>Uten deling blir alt på telefonen. Ingen konto, ingen sporing, ingen reklame.</dd></div>
@@ -121,7 +128,7 @@
 </main>
 <footer>
   <div class="innhold">
-    <p>Reiret er laget av Studio Fosselien. <a href="mailto:studio@fosselien.no">studio@fosselien.no</a></p>
+    <p>Reiret er laget av Studio Fosselien, Studio Fosse Lien (org.nr. 935 151 171), Oslo. <a href="mailto:studio@fosselien.no">studio@fosselien.no</a></p>
     <nav aria-label="Bunnmeny"><a href="/personvern/">Personvern</a><a href="/hjelp/">Hjelp</a></nav>
   </div>
 </footer>

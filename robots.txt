@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://reiret.fosselien.no/sitemap.xml
