@@ -125,7 +125,7 @@ a:hover { text-decoration-thickness: 2px; }
 .stripe figcaption b { display: block; color: var(--tekst); font-size: 1.05rem; }
 
 /* Laget for to: hvem appen er for, med en illustrasjon hver. */
-.for { padding: 0 var(--kant) clamp(4rem, 8vw, 7rem); }
+.for { padding: clamp(4rem, 8vw, 7rem) var(--kant); }
 .for .innhold, .prov .innhold, .telefoner .innhold, .stemmer .innhold, .sporsmal .innhold { max-width: var(--bred); margin: 0 auto; }
 .for .hode { max-width: var(--smal); margin-bottom: 2.5rem; }
 .for h2, .prov h2, .telefoner h2, .stemmer h2, .sporsmal h2, .slutt h2 {
@@ -179,11 +179,12 @@ a:hover { text-decoration-thickness: 2px; }
 .stemmer { background: var(--tekst); color: var(--bakgrunn); padding: clamp(4rem, 8vw, 7rem) var(--kant); }
 .stemmer .hode { max-width: var(--smal); margin-bottom: 2.5rem; }
 .stemmer .hode p { color: #c9cfc7; margin: 0; }
-.sitater { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: clamp(1.25rem, 3vw, 2rem); margin: 0; }
+.sitater { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.25rem, 3vw, 2rem); margin: 0; }
 .sitater figure { margin: 0; background: rgb(255 253 248 / 0.06); border-radius: 1.5rem; padding: clamp(1.25rem, 3vw, 1.75rem); display: flex; flex-direction: column; justify-content: space-between; gap: 1.25rem; }
 .sitater blockquote { margin: 0; font-size: clamp(1.15rem, 1.6vw, 1.3rem); line-height: 1.45; font-weight: 500; }
 .sitater figcaption { font-size: 0.9rem; color: #c9cfc7; line-height: 1.45; }
 .sitater a { color: #dfe8d8; }
+.stemmer .merknad a { color: #dfe8d8; }
 .stemmer .merknad { color: #aeb6ad; font-size: 0.9rem; margin: 2rem 0 0; max-width: var(--smal); }
 
 /* Spørsmål */
@@ -251,7 +252,7 @@ footer nav { display: flex; gap: 1.5rem; }
 
 @media (max-width: 760px) {
   .del .innhold, .loefte .innhold, .loefte dl { grid-template-columns: 1fr; }
-  .to, .prov .innhold { grid-template-columns: 1fr; }
+  .to, .prov .innhold, .sitater { grid-template-columns: 1fr; }
   .ukekort { grid-template-columns: 1fr; }
   .ukekort img { width: 7rem; height: 7rem; }
   .del:nth-of-type(even) .innhold figure { order: 0; }
