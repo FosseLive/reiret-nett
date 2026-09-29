@@ -1,0 +1,167 @@
+/* Reiret, nettsiden. Farger fra appens tokens (src/theme/tokens.ts). Bare lys utgave, som appen. */
+@font-face {
+  font-family: 'Albert Sans';
+  src: url('/skrift/albert-sans-normal.woff2') format('woff2');
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Albert Sans';
+  src: url('/skrift/albert-sans-italic.woff2') format('woff2');
+  font-weight: 400 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+  --papir: #faf4e3;
+  --bakgrunn: #f6f2ea;
+  --flate: #fffdf8;
+  --strek: #e6decf;
+  --tekst: #1e2723;
+  --dempet: #5b635d;
+  --mose: #4a6a47;
+  --mose-lys: #e1eada;
+  --nype: #fbe3df;
+  --lyng: #ece5f0;
+  --fjord: #dee8ee;
+  --krem: #f8edcc;
+  --smal: 38rem;
+  --bred: 72rem;
+  --kant: clamp(1.25rem, 4vw, 3rem);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--papir);
+  color: var(--tekst);
+  font: 400 1.125rem/1.6 'Albert Sans', -apple-system, 'Segoe UI', sans-serif;
+  font-feature-settings: 'ss01';
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: var(--mose); text-underline-offset: 0.2em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid var(--mose); outline-offset: 3px; border-radius: 4px; }
+
+.hopp { position: absolute; left: -999px; }
+.hopp:focus { left: var(--kant); top: 1rem; background: var(--flate); padding: 0.5rem 1rem; }
+
+/* Topp */
+.topplinje {
+  display: flex; align-items: center; justify-content: space-between;
+  max-width: var(--bred); margin: 0 auto; padding: 1.25rem var(--kant);
+}
+.merke { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--tekst); }
+.merke img { width: 44px; height: 44px; border-radius: 50%; }
+.merke span { font-weight: 800; font-size: 1.375rem; letter-spacing: -0.02em; }
+.topplinje nav { display: flex; gap: 1.5rem; font-size: 1rem; }
+.topplinje nav a { color: var(--dempet); text-decoration: none; }
+.topplinje nav a:hover { color: var(--tekst); }
+
+/* Hovedbildet: tekst til venstre, landskapet til høyre (under på mobil). */
+.helt {
+  display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: end; gap: clamp(2rem, 5vw, 5rem);
+  max-width: var(--bred); margin: 0 auto; padding: clamp(1rem, 4vw, 3rem) var(--kant) 0;
+}
+.helt h1 {
+  font-size: clamp(2.75rem, 7.2vw, 5.75rem); line-height: 0.98; letter-spacing: -0.035em;
+  font-weight: 800; margin: 0 0 1.5rem;
+}
+.helt h1 em { font-style: italic; font-weight: 500; color: var(--mose); }
+.ingress { font-size: clamp(1.2rem, 2vw, 1.4rem); color: var(--dempet); max-width: 30rem; margin: 0 0 2rem; }
+.snart {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: var(--tekst); color: var(--flate); border-radius: 999px;
+  padding: 0.85rem 1.4rem; font-weight: 600; font-size: 1rem;
+}
+.snart svg { width: 18px; height: 18px; }
+.helt .tekst { padding-bottom: clamp(2rem, 6vw, 6rem); }
+.helt figure { margin: 0; }
+.helt figure img { border-radius: 2rem 2rem 0 0; }
+
+/* Ukestripa: fruktene i gouache, fra uke 6 til 38. */
+.uker { background: var(--bakgrunn); padding: clamp(3rem, 7vw, 6rem) 0; }
+.uker .hode { max-width: var(--bred); margin: 0 auto 2.5rem; padding: 0 var(--kant); }
+.uker h2, .del h2, .loefte h2 {
+  font-size: clamp(2rem, 4.2vw, 3.25rem); line-height: 1.05; letter-spacing: -0.025em;
+  font-weight: 800; margin: 0 0 1rem;
+}
+.uker .hode p { color: var(--dempet); max-width: var(--smal); margin: 0; }
+.stripe {
+  display: flex; gap: clamp(1rem, 2.5vw, 2rem); overflow-x: auto; scroll-snap-type: x mandatory;
+  /* Starter på linje med innholdet over, og kan rulles helt ut til kanten. */
+  padding: 0.5rem max(var(--kant), calc((100vw - var(--bred)) / 2 + var(--kant))) 1.5rem;
+  scroll-padding-inline: max(var(--kant), calc((100vw - var(--bred)) / 2 + var(--kant)));
+  scrollbar-width: none;
+}
+.stripe::-webkit-scrollbar { display: none; }
+.stripe figure { margin: 0; flex: 0 0 auto; width: clamp(9rem, 17vw, 12rem); scroll-snap-align: start; text-align: center; }
+.stripe img { width: 100%; aspect-ratio: 1; border-radius: 50%; background: var(--papir); }
+.stripe figcaption { margin-top: 0.75rem; font-size: 0.95rem; color: var(--dempet); line-height: 1.35; }
+.stripe figcaption b { display: block; color: var(--tekst); font-size: 1.05rem; }
+
+/* Fortellingen: bilde og tekst vekselvis, hver del i sin egen tone. */
+.del { padding: clamp(3.5rem, 8vw, 7rem) var(--kant); }
+.del .innhold {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 6vw, 6rem);
+  align-items: center; max-width: var(--bred); margin: 0 auto;
+}
+.del:nth-of-type(even) .innhold figure { order: 2; }
+.del figure { margin: 0; }
+.del figure img { border-radius: 1.5rem; }
+.del p { color: var(--dempet); max-width: var(--smal); margin: 0 0 1rem; }
+.del .etikett { font-size: 0.95rem; font-weight: 700; color: var(--mose); margin-bottom: 0.75rem; }
+.tone-nype { background: var(--nype); }
+.tone-fjord { background: var(--fjord); }
+.tone-mose { background: var(--mose-lys); }
+.tone-lyng { background: var(--lyng); }
+.kilder { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.5rem 0 0; padding: 0; list-style: none; }
+.kilder li { background: var(--flate); border-radius: 999px; padding: 0.35rem 0.9rem; font-size: 0.95rem; font-weight: 600; }
+
+/* Personvernløftet */
+.loefte { padding: clamp(4rem, 9vw, 8rem) var(--kant); }
+.loefte .innhold { max-width: var(--bred); margin: 0 auto; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+.loefte img { width: clamp(7rem, 14vw, 11rem); border-radius: 50%; }
+.loefte dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1.5rem 3rem; margin: 2rem 0 0; }
+.loefte dt { font-weight: 700; margin-bottom: 0.25rem; }
+.loefte dd { margin: 0; color: var(--dempet); }
+
+/* Bunn */
+footer { background: var(--tekst); color: var(--bakgrunn); padding: 3rem var(--kant); }
+footer .innhold { max-width: var(--bred); margin: 0 auto; display: flex; flex-wrap: wrap; gap: 1rem 3rem; justify-content: space-between; align-items: center; }
+footer a { color: var(--bakgrunn); }
+footer p { margin: 0; font-size: 0.95rem; }
+footer nav { display: flex; gap: 1.5rem; }
+
+/* Tekstsider: personvern og hjelp */
+.side { max-width: 44rem; margin: 0 auto; padding: clamp(1.5rem, 5vw, 4rem) var(--kant) 5rem; }
+.side h1 { font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1; letter-spacing: -0.03em; font-weight: 800; margin: 0 0 1rem; }
+.side h2 { font-size: 1.4rem; letter-spacing: -0.01em; margin: 2.5rem 0 0.5rem; }
+.side p, .side li { color: var(--tekst); }
+.side .ingress { margin-bottom: 1rem; }
+.side .dato { color: var(--dempet); font-size: 0.95rem; }
+.side details { border-top: 1px solid var(--strek); padding: 1.1rem 0; }
+.side details:last-of-type { border-bottom: 1px solid var(--strek); }
+.side summary { font-weight: 700; cursor: pointer; font-size: 1.15rem; }
+.side details p { margin: 0.75rem 0 0; }
+.nod { background: var(--krem); border-radius: 1.25rem; padding: 1.25rem 1.5rem; margin: 2rem 0; }
+.nod p { margin: 0; }
+
+@media (max-width: 760px) {
+  .helt, .del .innhold, .loefte .innhold { grid-template-columns: 1fr; }
+  .del:nth-of-type(even) .innhold figure { order: 0; }
+  .topplinje nav { gap: 1rem; }
+  .helt .tekst { padding-bottom: 0.5rem; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .vis { animation: vis 900ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .vis-2 { animation-delay: 120ms; }
+  .vis-3 { animation-delay: 240ms; }
+  @keyframes vis { from { opacity: 0; transform: translateY(14px); } }
+}
