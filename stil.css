@@ -124,6 +124,84 @@ a:hover { text-decoration-thickness: 2px; }
 .stripe figcaption { margin-top: 0.75rem; font-size: 0.95rem; color: var(--dempet); line-height: 1.35; }
 .stripe figcaption b { display: block; color: var(--tekst); font-size: 1.05rem; }
 
+/* Laget for to: hvem appen er for, med en illustrasjon hver. */
+.for { padding: 0 var(--kant) clamp(4rem, 8vw, 7rem); }
+.for .innhold, .prov .innhold, .telefoner .innhold, .stemmer .innhold, .sporsmal .innhold { max-width: var(--bred); margin: 0 auto; }
+.for .hode { max-width: var(--smal); margin-bottom: 2.5rem; }
+.for h2, .prov h2, .telefoner h2, .stemmer h2, .sporsmal h2, .slutt h2 {
+  font-size: clamp(2rem, 4.2vw, 3.25rem); line-height: 1.05; letter-spacing: -0.025em; font-weight: 800; margin: 0 0 1rem;
+}
+.for .hode p, .prov p, .telefoner .hode p { color: var(--dempet); margin: 0; }
+.to { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.25rem, 3vw, 2rem); }
+.to article { background: var(--flate); border-radius: 1.75rem; padding: clamp(1.25rem, 3vw, 2rem); box-shadow: 0 1px 2px rgb(30 39 35 / 0.06), 0 12px 32px rgb(30 39 35 / 0.06); }
+.to img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 1.1rem; margin-bottom: 1.5rem; }
+.to h3 { font-size: clamp(1.35rem, 2.2vw, 1.65rem); letter-spacing: -0.015em; line-height: 1.15; margin: 0 0 0.75rem; }
+.to ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.6rem; }
+.to li { color: var(--dempet); padding-left: 1.5rem; position: relative; }
+.to li::before { content: ''; position: absolute; left: 0.2rem; top: 0.62em; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--mose); }
+
+/* Hvor langt har dere kommet: termin inn, uka ut, regnet i nettleseren. */
+.prov { background: var(--krem); padding: clamp(4rem, 8vw, 7rem) var(--kant); }
+.prov .innhold { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+.termin { display: grid; gap: 0.5rem; margin-top: 2rem; font-weight: 700; font-size: 1rem; max-width: 18rem; }
+.termin input {
+  font: inherit; font-weight: 500; font-size: 1.15rem; color: var(--tekst); background: var(--flate);
+  border: 2px solid var(--strek); border-radius: 1rem; padding: 0.8rem 1rem; min-height: 3.25rem;
+}
+.termin input:focus-visible { border-color: var(--mose); outline: none; box-shadow: 0 0 0 3px rgb(74 106 71 / 0.25); }
+.prov .feil { color: #9a3b26; font-size: 1rem; margin-top: 0.75rem; }
+.ukekort { background: var(--flate); border-radius: 1.75rem; padding: clamp(1.25rem, 3vw, 2rem); display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: clamp(1rem, 3vw, 2rem); box-shadow: 0 1px 2px rgb(30 39 35 / 0.06), 0 12px 32px rgb(30 39 35 / 0.06); }
+.ukekort img { width: 9rem; height: 9rem; border-radius: 50%; background: var(--papir); }
+.uketall { font-weight: 700; color: var(--mose); margin: 0 0 0.25rem; font-size: 1rem; }
+.ukekort h3 { font-size: clamp(1.4rem, 2.4vw, 1.8rem); letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 0.6rem; }
+.ukekort .kort { color: var(--tekst); margin: 0 0 1.25rem; }
+.velger { display: inline-flex; background: var(--papir); border-radius: 999px; padding: 0.25rem; gap: 0.25rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.velger button { font: inherit; font-size: 0.95rem; font-weight: 600; color: var(--dempet); background: none; border: 0; border-radius: 999px; padding: 0.55rem 1rem; min-height: 2.75rem; cursor: pointer; }
+.velger button[aria-pressed='true'] { background: var(--tekst); color: var(--flate); }
+.rolletekst { color: var(--dempet); margin: 0 0 1rem; }
+.oppgave { margin: 0; padding-top: 1rem; border-top: 1px solid var(--strek); font-size: 1rem; }
+
+/* Slik ser appen ut: telefonene side om side, rullbare på mobil. */
+.telefoner { padding: clamp(4rem, 8vw, 7rem) 0; }
+.telefoner .hode { max-width: var(--bred); margin: 0 auto 2.5rem; padding: 0 var(--kant); }
+.telefoner .rad {
+  display: flex; gap: clamp(1.25rem, 3vw, 2.5rem); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+  padding: 0.5rem max(var(--kant), calc((100vw - var(--bred)) / 2 + var(--kant))) 1.5rem;
+  scroll-padding-inline: max(var(--kant), calc((100vw - var(--bred)) / 2 + var(--kant)));
+}
+.telefoner .rad::-webkit-scrollbar { display: none; }
+.telefoner figure { margin: 0; flex: 0 0 auto; width: clamp(14rem, 22vw, 17.5rem); scroll-snap-align: start; }
+.telefoner img { width: 100%; border-radius: 2.2rem; border: 6px solid var(--tekst); background: var(--tekst); box-shadow: 0 20px 40px rgb(30 39 35 / 0.14); }
+.telefoner figcaption { margin-top: 1rem; color: var(--dempet); font-size: 0.98rem; line-height: 1.4; }
+.telefoner figcaption b { display: block; color: var(--tekst); font-size: 1.05rem; }
+
+/* Stemmene: hva vordende fedre og par sier i forskningen, med kilde. */
+.stemmer { background: var(--tekst); color: var(--bakgrunn); padding: clamp(4rem, 8vw, 7rem) var(--kant); }
+.stemmer .hode { max-width: var(--smal); margin-bottom: 2.5rem; }
+.stemmer .hode p { color: #c9cfc7; margin: 0; }
+.sitater { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: clamp(1.25rem, 3vw, 2rem); margin: 0; }
+.sitater figure { margin: 0; background: rgb(255 253 248 / 0.06); border-radius: 1.5rem; padding: clamp(1.25rem, 3vw, 1.75rem); display: flex; flex-direction: column; justify-content: space-between; gap: 1.25rem; }
+.sitater blockquote { margin: 0; font-size: clamp(1.15rem, 1.6vw, 1.3rem); line-height: 1.45; font-weight: 500; }
+.sitater figcaption { font-size: 0.9rem; color: #c9cfc7; line-height: 1.45; }
+.sitater a { color: #dfe8d8; }
+.stemmer .merknad { color: #aeb6ad; font-size: 0.9rem; margin: 2rem 0 0; max-width: var(--smal); }
+
+/* Spørsmål */
+.sporsmal { padding: clamp(4rem, 8vw, 7rem) var(--kant); }
+.sporsmal .innhold { max-width: 46rem; }
+.sporsmal details { border-top: 1px solid var(--strek); padding: 1.1rem 0; }
+.sporsmal details:last-of-type { border-bottom: 1px solid var(--strek); }
+.sporsmal summary { font-weight: 700; cursor: pointer; font-size: 1.15rem; min-height: 2.75rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; list-style: none; }
+.sporsmal summary::-webkit-details-marker { display: none; }
+.sporsmal summary::after { content: '+'; font-weight: 500; font-size: 1.6rem; line-height: 1; color: var(--mose); flex: none; }
+.sporsmal details[open] summary::after { content: '−'; }
+.sporsmal details p { margin: 0.5rem 0 0; color: var(--dempet); }
+
+/* Avslutningen */
+.slutt { background: var(--mose-lys); padding: clamp(4rem, 8vw, 6.5rem) var(--kant); text-align: center; }
+.slutt img { width: 7rem; height: 7rem; border-radius: 50%; margin: 0 auto 1.5rem; }
+.slutt p { color: var(--dempet); margin: 0; }
+
 /* Fortellingen: bilde og tekst vekselvis, hver del i sin egen tone. */
 .del { padding: clamp(3.5rem, 8vw, 7rem) var(--kant); }
 .del .innhold {
@@ -143,7 +221,7 @@ a:hover { text-decoration-thickness: 2px; }
 .kilder li { background: var(--flate); border-radius: 999px; padding: 0.35rem 0.9rem; font-size: 0.95rem; font-weight: 600; }
 
 /* Personvernløftet */
-.loefte { padding: clamp(4rem, 9vw, 8rem) var(--kant); }
+.loefte { background: var(--bakgrunn); padding: clamp(4rem, 9vw, 8rem) var(--kant); }
 .loefte .innhold { max-width: var(--bred); margin: 0 auto; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(2rem, 5vw, 4rem); align-items: start; }
 .loefte img { width: clamp(7rem, 14vw, 11rem); border-radius: 50%; }
 .loefte dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.75rem 3rem; margin: 2rem 0; max-width: 46rem; }
@@ -173,6 +251,9 @@ footer nav { display: flex; gap: 1.5rem; }
 
 @media (max-width: 760px) {
   .del .innhold, .loefte .innhold, .loefte dl { grid-template-columns: 1fr; }
+  .to, .prov .innhold { grid-template-columns: 1fr; }
+  .ukekort { grid-template-columns: 1fr; }
+  .ukekort img { width: 7rem; height: 7rem; }
   .del:nth-of-type(even) .innhold figure { order: 0; }
   .topplinje nav { gap: 1rem; }
 }

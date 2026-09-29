@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reiret: svangerskapet uke for uke, for dere begge</title>
-<meta name="description" content="Norsk app for svangerskapet og det første året, for den som er gravid og partneren. Ukens oppgaver, korte guider og verktøy, sjekket mot norske kilder.">
+<title>Reiret: svangerskapsappen for deg som skal bli far</title>
+<meta name="description" content="Norsk svangerskapsapp for deg som skal bli far eller medmor, med egen visning for henne som er gravid. Ukens oppgaver, korte guider og verktøy, sjekket mot norske kilder.">
 <meta name="theme-color" content="#faf4e3">
 <link rel="canonical" href="https://reiret.fosselien.no/">
-<meta property="og:title" content="Reiret: svangerskapet uke for uke, for dere begge">
-<meta property="og:description" content="Norsk app for svangerskapet og det første året, for den som er gravid og partneren. Ukens oppgaver, korte guider og verktøy, sjekket mot norske kilder.">
+<meta property="og:title" content="Reiret: svangerskapsappen for deg som skal bli far">
+<meta property="og:description" content="Norsk svangerskapsapp for deg som skal bli far eller medmor, med egen visning for henne som er gravid. Ukens oppgaver, korte guider og verktøy, sjekket mot norske kilder.">
 <meta property="og:image" content="https://reiret.fosselien.no/bilder/deling.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -18,6 +18,7 @@
 <link rel="preload" href="/skrift/albert-sans-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/stil.css">
 <script type="module" src="/helt.js"></script>
+<script type="module" src="/uke.js"></script>
 </head>
 <body class="forside">
 <a class="hopp" href="#innhold">Hopp til innholdet</a>
@@ -38,7 +39,7 @@
       <div class="dis" aria-hidden="true"></div>
       <div class="tekst">
         <h1 id="helt-tittel" aria-label="Et rede å vente i."><span aria-hidden="true"><span class="linje"><span class="ord"><span style="--i:0">E</span><span style="--i:1">t</span></span> <span class="ord"><span style="--i:2">r</span><span style="--i:3">e</span><span style="--i:4">d</span><span style="--i:5">e</span></span></span> <span class="linje"><span class="ord"><span style="--i:6">å</span></span> <span class="ord"><span style="--i:7">v</span><span style="--i:8">e</span><span style="--i:9">n</span><span style="--i:10">t</span><span style="--i:11">e</span></span> <span class="ord"><span style="--i:12">i</span><span style="--i:13">.</span></span></span></span></h1>
-        <p class="ingress vis">Reiret følger svangerskapet uke for uke, for den som er gravid og for partneren. Norsk, faktasjekket og uten reklame.</p>
+        <p class="ingress vis">Svangerskapsappen for deg som skal bli far eller medmor. Uke for uke vet du hva som skjer, hva du kan gjøre, og hva som gjelder i Norge. Hun får sin egen visning i samme app.</p>
       </div>
       <p class="snart vis vis-2"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18" r="1.2" fill="currentColor"/></svg>Kommer til iPhone</p>
     </div>
@@ -60,6 +61,74 @@
       <figure class="ton" style="--n:7"><img src="/bilder/uke-34.webp" alt="Gouache av en cantaloupemelon" width="480" height="480" loading="lazy"><figcaption><b>Uke 34</b>Omtrent som en cantaloupemelon</figcaption></figure>
       <figure class="ton" style="--n:8"><img src="/bilder/uke-38.webp" alt="Gouache av en stor kålrot" width="480" height="480" loading="lazy"><figcaption><b>Uke 38</b>Omtrent som en stor kålrot</figcaption></figure>
       <figure class="ton" style="--n:9"><img src="/bilder/uke-40.webp" alt="Gouache av et gresskar" width="480" height="480" loading="lazy"><figcaption><b>Uke 40</b>Omtrent som et gresskar</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="for" aria-labelledby="for-tittel">
+    <div class="innhold">
+      <div class="hode ton">
+        <h2 id="for-tittel">Du er ikke tilskuer.</h2>
+        <p>De fleste svangerskapsapper snakker bare til den som er gravid. Reiret snakker til deg som skal bli far eller medmor, og gir henne sin egen visning i samme app. Ett abonnement gjelder for dere begge.</p>
+      </div>
+      <div class="to">
+        <article class="ton" style="--n:1">
+          <img src="/bilder/a-bli-far.webp" alt="En partner sitter på venterommet hos jordmor med en notatblokk på fanget og ser bort på den gravide ved siden av seg" width="1170" height="874" loading="lazy">
+          <h3>Til deg som skal bli far eller medmor</h3>
+          <ul>
+            <li>Hva som skjer denne uka, forklart til deg som står ved siden av.</li>
+            <li>Én konkret ting å gjøre hver uke, så du vet hvordan du kan hjelpe.</li>
+            <li>Permisjon, farskap og papirene, i riktig rekkefølge.</li>
+          </ul>
+        </article>
+        <article class="ton" style="--n:2">
+          <img src="/bilder/kroppen-i-endring.webp" alt="En gravid kvinne står i profil foran et vindu i morgenlys med hånden på magen, mens partneren rekker henne en genser" width="1170" height="874" loading="lazy">
+          <h3>Til henne som er gravid</h3>
+          <ul>
+            <li>Hva som skjer med kroppen og babyen, uke for uke.</li>
+            <li>Svangerskapskontrollene, fødestedet og rettighetene hennes, slik de er i Norge.</li>
+            <li>Kjenn liv og rietimer, med fødeavdelingen ett trykk unna.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="prov" aria-labelledby="prov-tittel">
+    <div class="innhold">
+      <div class="ton">
+        <h2 id="prov-tittel">Hvor langt har dere kommet?</h2>
+        <p>Skriv inn terminen, så ser du uka dere er i, slik den står i appen. Datoen blir i nettleseren din.</p>
+        <label class="termin" for="termin">Termindato<input id="termin" type="date" autocomplete="off"></label>
+        <p class="feil" role="alert" hidden></p>
+      </div>
+      <article class="ukekort ton" style="--n:1" aria-live="polite">
+        <img src="/bilder/uke-20.webp" alt="Gouache av en banan" width="480" height="480">
+        <div>
+          <p class="uketall">Eksempel: Uke 20</p>
+          <h3>Omtrent som en banan</h3>
+          <p class="kort">Dere er halvveis. Babyen er omtrent like lang som en banan, og mange kjenner den tydelig nå.</p>
+          <div class="velger" role="group" aria-label="Hvem teksten er til">
+            <button type="button" data-rolle="gravid" aria-pressed="false">Til den som er gravid</button>
+            <button type="button" data-rolle="partner" aria-pressed="true">Til partneren</button>
+          </div>
+          <p class="rolletekst">Halvveis er et godt tidspunkt for å tenke over hva slags forelder du vil være. Ikke som en eksamen, men som en samtale med deg selv. Hva tar du med deg fra din egen oppvekst, og hva vil du gjøre annerledes? Hvem har du sett som forelder og tenkt at slik vil du også være?</p>
+          <p class="oppgave"><b>Ukens oppgave:</b> <span>Marker at dere er halvveis</span></p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="telefoner" aria-labelledby="telefoner-tittel">
+    <div class="hode ton">
+      <h2 id="telefoner-tittel">Slik ser Reiret ut.</h2>
+      <p>Skjermbildene er fra partnerens telefon, 22 uker ut i svangerskapet.</p>
+    </div>
+    <div class="rad" tabindex="0" aria-label="Skjermbilder fra appen">
+      <figure class="ton" style="--n:0"><img src="/bilder/app-i-dag.webp" alt="Skjermbilde av I dag i Reiret" width="600" height="1299" loading="lazy"><figcaption><b>I dag</b>Uka dere er i, hva som skjer, og hva du kan gjøre i dag.</figcaption></figure>
+      <figure class="ton" style="--n:1"><img src="/bilder/app-ukebrief.webp" alt="Skjermbilde av Ukebrief i Reiret" width="600" height="1299" loading="lazy"><figcaption><b>Ukebrief</b>Babyen, deg og det som kommer snart. «Til deg» er skrevet til partneren.</figcaption></figure>
+      <figure class="ton" style="--n:2"><img src="/bilder/app-uker.webp" alt="Skjermbilde av Uker i Reiret" width="600" height="1299" loading="lazy"><figcaption><b>Uker</b>Hele svangerskapet, med oppgavene for hver uke.</figcaption></figure>
+      <figure class="ton" style="--n:3"><img src="/bilder/app-verktoy.webp" alt="Skjermbilde av Verktøy i Reiret" width="600" height="1299" loading="lazy"><figcaption><b>Verktøy</b>Ring fødeavdelingen, Kjenn liv, sjekklister og avtaler.</figcaption></figure>
+      <figure class="ton" style="--n:4"><img src="/bilder/app-rietimer.webp" alt="Skjermbilde av Rietimer i Reiret" width="600" height="1299" loading="lazy"><figcaption><b>Rietimer</b>Hvor lange riene er og hvor ofte de kommer, med fødeavdelingen ett trykk unna.</figcaption></figure>
     </div>
   </section>
 
@@ -123,6 +192,29 @@
         </dl>
         <p><a href="/personvern/">Les personvernerklæringen</a></p>
       </div>
+    </div>
+  </section>
+
+  <section class="sporsmal" aria-labelledby="sporsmal-tittel">
+    <div class="innhold">
+      <h2 id="sporsmal-tittel" class="ton">Spørsmål dere kanskje har</h2>
+      <div class="ton" style="--n:1">
+        <details><summary>Hvem er Reiret for?</summary><p>Først og fremst for deg som skal bli far eller medmor. Den som er gravid får sin egen visning i samme app, og ett abonnement gjelder for dere begge. Dere velger rolle når dere starter, og appen skriver til hver av dere.</p></details>
+        <details><summary>Må vi ha appen begge to?</summary><p>Nei. Reiret virker fint for én. Har dere den begge, kan dere dele, og da ser dere de samme oppgavene, avtalene, sjekklistene og fødselsplanen på hver deres telefon.</p></details>
+        <details><summary>Hva koster Reiret?</summary><p>De første 7 dagene er gratis. Deretter er Reiret et abonnement per måned eller per år, og ett abonnement gjelder for dere begge.</p></details>
+        <details><summary>Hvor kommer innholdet fra?</summary><p>Fra norske kilder som Helsenorge, Helsedirektoratet, FHI, NAV og Mattilsynet. Hver tekst er sjekket mot kildene, og de står i appen.</p></details>
+        <details><summary>Erstatter Reiret jordmor eller lege?</summary><p>Nei. Reiret gir generell informasjon og hjelper dere å planlegge. Er dere bekymret, ring fødeavdelingen eller legevakten på 116 117. Ved akutt fare, ring 113.</p></details>
+        <details><summary>Hva skjer med dataene våre?</summary><p>Uten deling blir alt på telefonen. Velger dere å dele, lagres det dere deler på en server i Stockholm. <a href="/personvern/">Les personvernerklæringen</a>.</p></details>
+        <details><summary>Når kommer Reiret, og kommer den til Android?</summary><p>Reiret testes nå og kommer til iPhone først. Android kan komme senere.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="slutt" aria-labelledby="slutt-tittel">
+    <div class="innhold ton">
+      <img src="/bilder/maskot.webp" alt="" width="480" height="480" loading="lazy">
+      <h2 id="slutt-tittel">Reiret kommer til iPhone.</h2>
+      <p>Prøv gratis i 7 dager. Ett abonnement gjelder for dere begge.</p>
     </div>
   </section>
 </main>
