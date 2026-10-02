@@ -238,6 +238,21 @@ footer .innhold { max-width: var(--bred); margin: 0 auto; display: flex; flex-wr
 footer a { color: var(--bakgrunn); }
 footer p { margin: 0; font-size: 0.95rem; }
 footer nav { display: flex; gap: 1.5rem; }
+/* TikTok og deling. Delingsknappene vises først av del.js, så [hidden] må vinne over display. */
+[data-del][hidden] { display: none; }
+footer .sosialt { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+footer .sosialt a, footer .sosialt button {
+  display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; padding: 0.4rem 1rem;
+  border: 1px solid rgb(250 244 227 / 0.3); border-radius: 999px; background: none;
+  color: var(--bakgrunn); font: inherit; font-size: 0.95rem; text-decoration: none; cursor: pointer;
+}
+footer .sosialt a:hover, footer .sosialt button:hover { border-color: var(--bakgrunn); }
+.slutt .del {
+  display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 1.75rem; min-height: 48px;
+  padding: 0.75rem 1.4rem; border: 0; border-radius: 999px; background: var(--mose); color: #fff;
+  font: inherit; font-weight: 700; cursor: pointer;
+}
+.slutt .del:hover { filter: brightness(1.08); }
 
 /* Tekstsider: personvern og hjelp */
 .side { max-width: 44rem; margin: 0 auto; padding: clamp(1.5rem, 5vw, 4rem) var(--kant) 5rem; }
