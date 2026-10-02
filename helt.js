@@ -146,10 +146,13 @@ function start(helt) {
     const r = window.devicePixelRatio || 1;
     const b = scene.clientWidth;
     const h = scene.clientHeight;
-    const tetthet = Math.min(r, b * h > 1.2e6 ? 2 : 3);
+    // Maks 2x: et malt bilde trenger ikke mer, og på telefon gir 3x et lerret på over 3 megapiksler.
+    const tetthet = Math.min(r, 2);
     lerret.width = Math.round(b * tetthet);
     lerret.height = Math.round(h * tetthet);
     lesPosisjon();
+    // Ny størrelse tømmer lerretet. Tegn med en gang, så det aldri står tomt til neste bilde.
+    if (lerret.classList.contains('klar')) tegn();
   }
   new ResizeObserver(tilpass).observe(scene);
   tilpass();
@@ -333,7 +336,15 @@ void main() {
 }`;
 
 function lagMaler(lerret) {
-  const gl = lerret.getContext('webgl2', { alpha: false, antialias: false, powerPreference: 'low-power' });
+  // alpha og preserveDrawingBuffer: Safari på iPhone kan vise en tom buffer mens siden ruller. Med
+  // alpha viser den da maleriet bak lerretet i stedet for svart, og den forrige tegningen blir
+  // stående til den neste er klar (sett som svarte blink på iPhone 02.10, ikke på PC).
+  const gl = lerret.getContext('webgl2', {
+    alpha: true,
+    preserveDrawingBuffer: true,
+    antialias: false,
+    powerPreference: 'low-power',
+  });
   if (!gl) return null;
   const skygge = (type, kilde) => {
     const s = gl.createShader(type);
