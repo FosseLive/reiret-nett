@@ -67,9 +67,10 @@ a:hover { text-decoration-thickness: 2px; }
 .forside .topplinje { position: absolute; z-index: 3; top: 0; left: 0; right: 0; }
 .helt { position: relative; height: 100vh; height: 100svh; min-height: 34rem; }
 .levende .helt { height: 230vh; }
-/* Med mus og styreflate (PC) går dykket over to skjermhøyder, ikke 1,3. Et musehjul tar
-   omtrent 100 px per hakk, og på 230vh var hele dykket over på en håndfull hakk (Jonathan 02.10). */
-@media (hover: hover) and (pointer: fine) { .levende .helt { height: 300vh; } }
+/* Med mus og styreflate (PC) går dykket over 3,5 skjermhøyder, ikke 1,3. Et musehjul tar omtrent
+   100 px per hakk, og et sveip på styreflaten mye mer. På 230vh (02.10) og 300vh (04.10) syntes
+   Jonathan fortsatt at det gikk for fort på laptopen. helt.js gjør også etterfølgingen roligere her. */
+@media (hover: hover) and (pointer: fine) { .levende .helt { height: 450vh; } }
 /* Ukene glir opp over maleriet mens det løses opp i papir, så det aldri står en tom skjerm. */
 .levende .uker { margin-top: -35vh; }
 .scene { position: relative; height: 100%; overflow: hidden; background: var(--papir); }

@@ -20,6 +20,8 @@ const glatt = (a, b, x) => {
 };
 const innUt = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
 const ut = (t) => 1 - (1 - t) ** 3;
+/** Hvor fort dykket tar igjen rullingen, per sekund. Lavere er roligere. */
+const FART = matchMedia('(hover: hover) and (pointer: fine)').matches ? 4.5 : 9;
 
 function start(helt) {
   document.documentElement.classList.add('levende');
@@ -194,8 +196,9 @@ function start(helt) {
     const dt = Math.min(0.1, (nå - sist) / 1000);
     sist = nå;
     const p = fremdrift();
-    // Myk etterfølging, så dykket glir selv om rullingen hakker.
-    myk += (p - myk) * (1 - Math.exp(-dt * 9));
+    // Myk etterfølging, så dykket glir selv om rullingen hakker. Roligere med mus og styreflate,
+    // der ett sveip kan flytte siden en hel skjermhøyde på et øyeblikk (Jonathan 04.10).
+    myk += (p - myk) * (1 - Math.exp(-dt * FART));
     if (Math.abs(p - myk) < 0.0004) myk = p;
     oppdater(myk);
     if (myk < 0.5 && tid() > nesteDråpe) tilfeldigDråpe();
