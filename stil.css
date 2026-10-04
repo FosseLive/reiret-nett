@@ -92,17 +92,15 @@ a:hover { text-decoration-thickness: 2px; }
 .helt h1 .ord { display: inline-block; white-space: nowrap; }
 .helt h1 .ord > span { display: inline-block; }
 .helt .ingress { color: var(--tekst); max-width: 27rem; text-wrap: pretty; margin: 0; }
-/* «Kommer til iPhone» står nederst, over åsene. Løftet over Safaris verktøylinje på iPhone. */
-.helt .snart {
+/* App Store-merket står nederst, over åsene. Løftet over Safaris verktøylinje på iPhone. */
+.helt .hent {
   position: absolute; z-index: 2; left: max(var(--kant), calc((100% - var(--bred)) / 2 + var(--kant)));
   bottom: 2rem; bottom: calc(2rem + 100lvh - 100svh); margin: 0;
 }
-.snart {
-  display: inline-flex; align-items: center; gap: 0.6rem;
-  background: var(--tekst); color: var(--flate); border-radius: 999px;
-  padding: 0.85rem 1.4rem; font-weight: 600; font-size: 1rem;
-}
-.snart svg { width: 18px; height: 18px; }
+/* Apples merke: minst 40 punkter høyt og med luft rundt, uendret ellers (Apples retningslinjer). */
+.app-store { display: inline-block; line-height: 0; border-radius: 0.75rem; }
+.app-store img { display: block; width: auto; height: 3.25rem; }
+.app-store:focus-visible { outline: 3px solid var(--mose); outline-offset: 4px; }
 
 .ingress { font-size: clamp(1.15rem, 1.8vw, 1.35rem); color: var(--dempet); max-width: 30rem; margin: 0 0 2rem; }
 
@@ -205,6 +203,8 @@ a:hover { text-decoration-thickness: 2px; }
 .slutt { background: var(--mose-lys); padding: clamp(4rem, 8vw, 6.5rem) var(--kant); text-align: center; }
 .slutt img { width: 7rem; height: 7rem; border-radius: 50%; margin: 0 auto 1.5rem; }
 .slutt p { color: var(--dempet); margin: 0; }
+.slutt .hent { margin-top: 1.75rem; }
+.slutt .app-store img { width: auto; height: 3.25rem; border-radius: 0; margin: 0; }
 
 /* Fortellingen: bilde og tekst vekselvis, hver del i sin egen tone. */
 .del { padding: clamp(3.5rem, 8vw, 7rem) var(--kant); }
