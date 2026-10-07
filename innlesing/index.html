@@ -78,8 +78,25 @@ async function kall(kropp) {
   const r = await fetch(API, { method: 'POST', headers: { 'content-type': 'application/json', 'x-lesekode': lagret('kode') || '' }, body: JSON.stringify({ leserId, ...kropp }) });
   const j = await r.json().catch(() => ({}));
   if (r.status === 401) { lagret('kode', null); visKode('Koden stemmer ikke. Prøv igjen.'); throw new Error('kode'); }
+  // Samtykket finnes ikke på serveren (for eksempel en annen nettleser): be om det på nytt.
+  if (j.feil === 'samtykke') { lagret('samtykke', null); visSamtykke('Vi trenger navnet ditt og samtykket før du kan ta noe.'); throw new Error('samtykke'); }
   if (!r.ok) throw Object.assign(new Error(j.feil || 'feil'), { svar: j });
   return j;
+}
+
+/** Knapp som viser at den jobber, og en melding når noe går galt. */
+async function jobb(knapp, tekst, fn) {
+  const forrige = knapp.textContent;
+  knapp.disabled = true; knapp.textContent = tekst; knapp.setAttribute('aria-busy', 'true');
+  try { await fn(); }
+  catch (e) {
+    if (e.message === 'kode' || e.message === 'samtykke') return;
+    const melding = { tatt: 'Noen andre rakk å ta denne. Velg en annen.', laast: 'Denne er låst.', 'ikke-din': 'Denne er tatt av noen andre.' }[e.message]
+      ?? (e instanceof TypeError ? 'Fikk ikke kontakt. Sjekk nettet og prøv igjen.' : 'Noe gikk galt. Prøv igjen.');
+    visFeil(melding);
+  } finally {
+    if (knapp.isConnected) { knapp.disabled = false; knapp.textContent = forrige; knapp.removeAttribute('aria-busy'); }
+  }
 }
 
 function visKode(feil) {
@@ -94,9 +111,10 @@ function visKode(feil) {
   $('#f').onsubmit = (e) => { e.preventDefault(); lagret('kode', $('#kode').value.trim()); start(); };
 }
 
-function visSamtykke() {
+function visSamtykke(melding) {
   bunn.hidden = true;
   app.innerHTML = `<h1>Før du begynner</h1>
+  ${melding ? `<p class="feil">${esc(melding)}</p>` : ''}
   <form id="f" class="kort stakk" style="margin-top:1rem">
     <div><label for="navn">Navnet ditt</label><input id="navn" type="text" autocomplete="given-name" required maxlength="60"></div>
     <label class="avkryss"><input id="samtykke" type="checkbox" required> <span>Jeg samtykker til at Studio Fosse Lien bruker opptakene av stemmen min i appen Reiret.</span></label>
@@ -109,10 +127,12 @@ function visSamtykke() {
     <p>Les rolig og vennlig, som om du forklarer noe til en venn. Det gjør ingenting om det ikke er perfekt. Ta på nytt hvis du snubler.</p>
     <p>Les teksten slik den står. Telefonnumre leses siffer for siffer.</p>
   </div>`;
-  $('#f').onsubmit = async (e) => {
+  $('#f').onsubmit = (e) => {
     e.preventDefault();
-    await kall({ handling: 'leser', navn: $('#navn').value, samtykke: $('#samtykke').checked, kreditering: $('#kred').checked });
-    lagret('samtykke', '1'); lagret('navn', $('#navn').value.trim()); visListe();
+    jobb(e.submitter ?? $('#f button'), 'Lagrer …', async () => {
+      await kall({ handling: 'leser', navn: $('#navn').value, samtykke: $('#samtykke').checked, kreditering: $('#kred').checked });
+      lagret('samtykke', '1'); lagret('navn', $('#navn').value.trim()); visListe();
+    });
   };
 }
 
@@ -155,14 +175,14 @@ async function apne(id) {
     app.innerHTML = `<button class="tekstknapp" id="tilbake">‹ Tilbake</button><h1>${esc(p.tittel)}</h1>
     <p class="dempet">${p.deler.length} deler, omtrent ${min} minutter å lese. Les gjennom, og ta den hvis den passer for deg. Da leser bare du denne, så stemmen er den samme hele veien.</p>
     ${p.deler.map((d, i) => `<div class="kort stakk" style="margin-top:0.75rem"><p class="liten dempet" style="margin:0">Del ${i + 1}: ${esc(d.tittel)}</p><p>${esc(d.tekst)}</p></div>`).join('')}`;
+    bunnFeil();
     bunn.hidden = false;
     bunn.innerHTML = `<div class="rad"><button class="sekundar" id="ikke">Ikke denne</button><button class="hoved" id="ta" style="flex:1;width:auto">Jeg tar denne</button></div>`;
     $('#tilbake').onclick = visListe;
     $('#ikke').onclick = visListe;
-    $('#ta').onclick = async () => {
-      try { await kall({ handling: 'ta', id }); await hent(); valgt = id; delIndeks = forsteMangler(p); visDel(); }
-      catch (e) { if (e.message === 'tatt') { alert('Noen andre rakk å ta denne. Velg en annen.'); await hent(); visListe(); } }
-    };
+    $('#ta').onclick = (e) => jobb(e.currentTarget, 'Tar den …', async () => {
+      await kall({ handling: 'ta', id }); await hent(); valgt = id; delIndeks = forsteMangler(p); visDel();
+    });
     window.scrollTo(0, 0);
     return;
   }
@@ -199,26 +219,28 @@ function visDel() {
     <button class="tekstknapp" id="gifra">${data.opptak.some((o) => o.innhold_id === valgt) ? 'Gi den fra meg' : 'Angre, jeg tar den ikke'}</button>
   </div>`}
   <p class="feil" id="feil" hidden></p>`;
-  $('#tilbake').onclick = async () => { stoppAlt(); await hent(); visListe(); };
+  $('#tilbake').onclick = (e) => jobb(e.currentTarget, '‹ Henter …', async () => { stoppAlt(); await hent(); visListe(); });
   app.querySelectorAll('[data-i]').forEach((b) => (b.onclick = () => { stoppAlt(); delIndeks = Number(b.dataset.i); visDel(); }));
   if (!laast) {
-    $('#hor')?.addEventListener('click', async () => { const { url } = await kall({ handling: 'lytt', nokkel: d.nokkel }); spill(url); });
-    $('#ferdig')?.addEventListener('click', async () => {
-      try { await kall({ handling: 'ferdig', id: valgt }); await hent(); alert('Takk! Den er lest inn og låst.'); visListe(); }
-      catch (e) { visFeil(e.svar?.antall ? `Det mangler ${e.svar.antall} deler.` : 'Noe gikk galt. Prøv igjen.'); }
-    });
-    $('#gifra').onclick = async () => {
+    $('#hor')?.addEventListener('click', (e) => jobb(e.currentTarget, 'Henter …', async () => { const { url } = await kall({ handling: 'lytt', nokkel: d.nokkel }); spill(url); }));
+    $('#ferdig')?.addEventListener('click', (e) => jobb(e.currentTarget, 'Låser …', async () => {
+      try { await kall({ handling: 'ferdig', id: valgt }); }
+      catch (f) { if (f.svar?.antall) { visFeil(`Det mangler ${f.svar.antall} deler.`); return; } throw f; }
+      await hent(); alert('Takk! Den er lest inn og låst.'); visListe();
+    }));
+    $('#gifra').onclick = (ev) => jobb(ev.currentTarget, 'Et øyeblikk …', async () => {
       const antall = data.opptak.filter((o) => o.innhold_id === valgt).length;
       if (antall && !confirm(`Gi den fra deg? De ${antall} opptakene du har gjort her, slettes.`)) return;
       stoppAlt();
       await kall({ handling: 'gi-fra', id: valgt }); await hent(); visListe();
-    };
+    });
   }
   visBunn(laast);
   window.scrollTo(0, 0);
 }
 
-function visFeil(t) { const f = $('#feil'); if (f) { f.textContent = t; f.hidden = false; } }
+function bunnFeil() { if (!$('#feil')) app.insertAdjacentHTML('beforeend', '<p class="feil" id="feil" role="alert" hidden></p>'); }
+function visFeil(t) { bunnFeil(); const f = $('#feil'); f.textContent = t; f.hidden = false; f.scrollIntoView({ block: 'nearest' }); }
 
 function visBunn(laast) {
   if (laast) { bunn.hidden = true; return; }
