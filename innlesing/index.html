@@ -111,6 +111,36 @@ function visKode(feil) {
   $('#f').onsubmit = (e) => { e.preventDefault(); lagret('kode', $('#kode').value.trim()); start(); };
 }
 
+/** Velkommen og takk (Jonathan 07.10): vises etter koden, før navn og samtykke. */
+function visVelkommen() {
+  bunn.hidden = true;
+  const totalt = data.innhold.reduce((n, p) => n + p.deler.length, 0);
+  app.innerHTML = `<h1>Tusen takk for at du vil hjelpe!</h1>
+  <p>Reiret er en app for foreldre som venter barn, og for det første året etter fødselen. Den forklarer hver uke hva som skjer med babyen og med dere, og hva som er lurt å gjøre, sjekket mot norske kilder som Helsenorge.</p>
+  <p>Mange foreldre vil heller lytte enn lese, for eksempel i bilen, på tur med vogna eller midt på natta med en baby på armen. Derfor vil vi at alt i appen skal kunne leses opp av ekte, varme stemmer i stedet for en datastemme. Det er der du kommer inn.</p>
+  <div class="kort stakk" style="margin-top:1.25rem">
+    <strong>Slik gjør du det</strong>
+    <p>1. Velg en uke, en måned eller en artikkel som er ledig. Les gjerne gjennom teksten først.</p>
+    <p>2. Trykk «Jeg tar denne». Da er den din, så den samme stemmen leser hele veien. Du kan angre.</p>
+    <p>3. Les inn én del om gangen: trykk «Ta opp», les teksten, og trykk «Stopp». Hør på det, og ta på nytt hvis du vil.</p>
+    <p>4. Når alle delene er lest inn, trykker du «Ferdig, lås den». Ta gjerne én til hvis du har lyst.</p>
+    <p class="dempet liten">En uke tar rundt fem til ti minutter å lese. Alt i alt er det ${data.innhold.length} uker, måneder og artikler, med ${totalt} deler.</p>
+  </div>
+  <div class="kort stakk" style="margin-top:1rem">
+    <strong>Tips for et godt opptak</strong>
+    <p>Sitt et stille sted. Tepper, puter og klær rundt deg demper ekko, og et klesskap er faktisk et godt studio.</p>
+    <p>Hold mobilen en håndbredde fra munnen, og bruk samme telefon eller PC hele veien.</p>
+    <p>Les rolig og vennlig, som om du forklarer noe til en venn. Det trenger ikke være perfekt. Snubler du, er det bare å ta på nytt.</p>
+    <p>Les teksten slik den står. Telefonnumre leses siffer for siffer.</p>
+  </div>
+  <p style="margin-top:1.25rem">Hjertelig takk for at du gir av tiden din til dette. Det betyr mye, både for oss og for alle som skal lytte.</p>
+  <p class="dempet">Hilsen Jonathan</p>`;
+  bunn.hidden = false;
+  bunn.innerHTML = `<div class="rad"><button class="hoved" id="videre">${lagret('samtykke') ? 'Tilbake til lista' : 'Kom i gang'}</button></div>`;
+  $('#videre').onclick = () => { lagret('velkommen', '1'); return lagret('samtykke') ? visListe() : visSamtykke(); };
+  window.scrollTo(0, 0);
+}
+
 function visSamtykke(melding) {
   bunn.hidden = true;
   app.innerHTML = `<h1>Før du begynner</h1>
@@ -120,13 +150,7 @@ function visSamtykke(melding) {
     <label class="avkryss"><input id="samtykke" type="checkbox" required> <span>Jeg samtykker til at Studio Fosse Lien bruker opptakene av stemmen min i appen Reiret.</span></label>
     <label class="avkryss"><input id="kred" type="checkbox"> <span>Navnet mitt kan stå i appen ved det jeg har lest inn.</span></label>
     <button class="hoved">Videre</button>
-  </form>
-  <div class="kort stakk liten" style="margin-top:1rem">
-    <strong>Tips for et godt opptak</strong>
-    <p>Sitt et stille sted, gjerne med tepper eller klær rundt deg. Hold mobilen en håndbredde fra munnen.</p>
-    <p>Les rolig og vennlig, som om du forklarer noe til en venn. Det gjør ingenting om det ikke er perfekt. Ta på nytt hvis du snubler.</p>
-    <p>Les teksten slik den står. Telefonnumre leses siffer for siffer.</p>
-  </div>`;
+  </form>`;
   $('#f').onsubmit = (e) => {
     e.preventDefault();
     jobb(e.submitter ?? $('#f button'), 'Lagrer …', async () => {
@@ -157,10 +181,12 @@ function visListe() {
   const grupper = [...new Set(filtrert.map((p) => p.gruppe))];
   app.innerHTML = `<h1>Les inn Reiret</h1>
   <p class="dempet">${ferdige} av ${data.innhold.length} er lest inn. Velg noe som er ledig, så er det ditt til du er ferdig.</p>
+  <button class="tekstknapp" id="om">Om innlesingen og tips</button>
   <div class="faner" role="group" aria-label="Vis">
     ${[['ledige', 'Ledige'], ['mine', 'Mine'], ['alle', 'Alle']].map(([k, t]) => `<button data-fane="${k}" aria-pressed="${fane === k}">${t}</button>`).join('')}
   </div>
   ${grupper.length ? grupper.map((g) => `<h2>${esc(g)}</h2><ul class="liste">${filtrert.filter((p) => p.gruppe === g).map((p) => { const st = statusFor(p); return `<li><button data-id="${esc(p.id)}"><span>${esc(p.tittel)}</span><span class="merke ${st.kl}">${st.tekst}</span></button></li>`; }).join('')}</ul>`).join('') : `<p class="kort dempet">${fane === 'mine' ? 'Du har ikke tatt noe ennå.' : 'Ingenting her.'}</p>`}`;
+  $('#om').onclick = visVelkommen;
   app.querySelectorAll('[data-fane]').forEach((b) => (b.onclick = () => { fane = b.dataset.fane; visListe(); }));
   app.querySelectorAll('[data-id]').forEach((b) => (b.onclick = () => apne(b.dataset.id)));
   window.scrollTo(0, 0);
@@ -309,6 +335,7 @@ async function lagre() {
 async function start() {
   if (!lagret('kode')) return visKode();
   try { await hent(); } catch (e) { if (e.message !== 'kode') { app.innerHTML = '<p class="feil">Fikk ikke kontakt. Prøv igjen om litt.</p>'; } return; }
+  if (!lagret('velkommen')) return visVelkommen();
   if (!lagret('samtykke')) return visSamtykke();
   visListe();
 }
