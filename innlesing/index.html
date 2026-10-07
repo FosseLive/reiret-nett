@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Les inn Reiret</title>
+<link rel="icon" href="/favicon.png">
+<style>
+@font-face { font-family: 'Albert Sans'; src: url('/skrift/albert-sans-normal.woff2') format('woff2'); font-weight: 400 800; }
+:root {
+  --papir: #faf4e3; --bakgrunn: #f6f2ea; --flate: #fffdf8; --strek: #e6decf;
+  --tekst: #1e2723; --dempet: #5b635d; --mose: #4a6a47; --mose-lys: #e1eada;
+  --krem: #f8edcc; --rust: #8f4a2a; --rod: #b3402a;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bakgrunn); color: var(--tekst); font: 17px/1.5 'Albert Sans', system-ui, sans-serif; }
+main { max-width: 42rem; margin: 0 auto; padding: max(1.25rem, env(safe-area-inset-top)) 1rem calc(7rem + env(safe-area-inset-bottom)); }
+h1 { font-size: 2rem; line-height: 1.15; margin: 0.5rem 0; letter-spacing: -0.01em; }
+h2 { font-size: 1.15rem; color: var(--mose); margin: 2rem 0 0.75rem; }
+p { margin: 0.5rem 0; }
+.dempet { color: var(--dempet); }
+.liten { font-size: 0.9rem; }
+.kort { background: var(--flate); border: 1px solid var(--strek); border-radius: 18px; padding: 1rem 1.1rem; }
+.stakk > * + * { margin-top: 0.75rem; }
+label { display: block; font-weight: 600; margin-bottom: 0.35rem; }
+input[type=text], input[type=password] { width: 100%; font: inherit; padding: 0.8rem 1rem; border: 1px solid var(--strek); border-radius: 12px; background: var(--flate); }
+.avkryss { display: flex; gap: 0.75rem; align-items: flex-start; font-weight: 400; }
+.avkryss input { width: 1.4rem; height: 1.4rem; margin-top: 0.15rem; accent-color: var(--mose); flex: none; }
+button { font: inherit; font-weight: 600; border: 0; border-radius: 999px; padding: 0.85rem 1.4rem; min-height: 48px; cursor: pointer; }
+button:focus-visible { outline: 3px solid var(--mose); outline-offset: 3px; }
+button[disabled] { opacity: 0.45; cursor: default; }
+.hoved { background: var(--mose); color: var(--flate); width: 100%; }
+.sekundar { background: var(--mose-lys); color: var(--mose); }
+.tekstknapp { background: none; color: var(--mose); padding: 0.5rem 0.25rem; min-height: 44px; }
+.rad { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; }
+.liste { list-style: none; margin: 0; padding: 0; background: var(--flate); border: 1px solid var(--strek); border-radius: 18px; overflow: hidden; }
+.liste li + li { border-top: 1px solid var(--strek); }
+.liste button { width: 100%; text-align: left; background: none; border-radius: 0; padding: 0.85rem 1rem; display: flex; justify-content: space-between; gap: 0.75rem; align-items: center; font-weight: 500; color: var(--tekst); }
+.merke { font-size: 0.8rem; font-weight: 700; padding: 0.15rem 0.6rem; border-radius: 999px; white-space: nowrap; background: var(--bakgrunn); color: var(--dempet); }
+.merke.din { background: var(--krem); color: #7c5f1c; }
+.merke.ferdig { background: var(--mose-lys); color: var(--mose); }
+.faner { display: flex; gap: 0.25rem; background: #efe9dd; border-radius: 999px; padding: 0.25rem; margin: 1rem 0; }
+.faner button { flex: 1; background: none; padding: 0.55rem 0.5rem; min-height: 40px; color: var(--dempet); font-size: 0.95rem; }
+.faner button[aria-pressed=true] { background: var(--flate); color: var(--tekst); box-shadow: 0 1px 3px rgba(30,39,35,.12); }
+.deltekst { font-size: 1.25rem; line-height: 1.6; white-space: pre-wrap; }
+.deler { display: flex; gap: 0.35rem; flex-wrap: wrap; margin: 0.5rem 0 1rem; }
+.deler button { min-width: 2.6rem; min-height: 2.6rem; padding: 0.3rem 0.6rem; border-radius: 10px; background: var(--flate); border: 1px solid var(--strek); color: var(--dempet); font-size: 0.9rem; }
+.deler button.ok { background: var(--mose-lys); color: var(--mose); border-color: transparent; }
+.deler button[aria-current=true] { outline: 2px solid var(--mose); color: var(--tekst); }
+.bunn { position: fixed; left: 0; right: 0; bottom: 0; background: linear-gradient(to top, var(--bakgrunn) 70%, transparent); padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom)); }
+.bunn .rad { max-width: 42rem; margin: 0 auto; }
+.opptak { background: var(--rod); color: #fff; flex: 1; }
+.opptak.tar { animation: puls 1.4s ease-out infinite; }
+@keyframes puls { 0%, 100% { opacity: 1; } 50% { opacity: 0.75; } }
+@media (prefers-reduced-motion: reduce) { .opptak.tar { animation: none; } }
+.tid { font-variant-numeric: tabular-nums; font-weight: 700; min-width: 3.5rem; text-align: center; }
+.feil { color: var(--rust); font-weight: 600; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main id="app" aria-live="polite"></main>
+<div class="bunn" id="bunn" hidden></div>
+<script>
+const API = 'https://sfxxnisneospalfijczz.supabase.co/functions/v1/innlesing';
+const $ = (s) => document.querySelector(s);
+const app = $('#app');
+const bunn = $('#bunn');
+const lagret = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch { return null; } };
+let leserId = lagret('leserId');
+if (!leserId) { leserId = crypto.randomUUID(); lagret('leserId', leserId); }
+let data = null; let fane = 'ledige'; let valgt = null; let delIndeks = 0;
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+async function kall(kropp) {
+  const r = await fetch(API, { method: 'POST', headers: { 'content-type': 'application/json', 'x-lesekode': lagret('kode') || '' }, body: JSON.stringify({ leserId, ...kropp }) });
+  const j = await r.json().catch(() => ({}));
+  if (r.status === 401) { lagret('kode', null); visKode('Koden stemmer ikke. Prøv igjen.'); throw new Error('kode'); }
+  if (!r.ok) throw Object.assign(new Error(j.feil || 'feil'), { svar: j });
+  return j;
+}
+
+function visKode(feil) {
+  bunn.hidden = true;
+  app.innerHTML = `<h1>Les inn Reiret</h1>
+  <p class="dempet">Takk for at du vil hjelpe. Her leser du inn ukene og artiklene i Reiret, så foreldre kan lytte med en ekte stemme. Du har fått en kode av Jonathan.</p>
+  <form id="f" class="kort stakk" style="margin-top:1.5rem">
+    <div><label for="kode">Koden</label><input id="kode" type="password" autocomplete="off" autocapitalize="none" required></div>
+    ${feil ? `<p class="feil">${esc(feil)}</p>` : ''}
+    <button class="hoved">Fortsett</button>
+  </form>`;
+  $('#f').onsubmit = (e) => { e.preventDefault(); lagret('kode', $('#kode').value.trim()); start(); };
+}
+
+function visSamtykke() {
+  bunn.hidden = true;
+  app.innerHTML = `<h1>Før du begynner</h1>
+  <form id="f" class="kort stakk" style="margin-top:1rem">
+    <div><label for="navn">Navnet ditt</label><input id="navn" type="text" autocomplete="given-name" required maxlength="60"></div>
+    <label class="avkryss"><input id="samtykke" type="checkbox" required> <span>Jeg samtykker til at Studio Fosse Lien bruker opptakene av stemmen min i appen Reiret. Jeg kan be om å få dem slettet når som helst ved å sende e-post til studio@fosselien.no.</span></label>
+    <label class="avkryss"><input id="kred" type="checkbox"> <span>Navnet mitt kan stå i appen ved det jeg har lest inn.</span></label>
+    <button class="hoved">Videre</button>
+  </form>
+  <div class="kort stakk liten" style="margin-top:1rem">
+    <strong>Tips for et godt opptak</strong>
+    <p>Sitt et stille sted, gjerne med tepper eller klær rundt deg. Hold mobilen en håndbredde fra munnen.</p>
+    <p>Les rolig og vennlig, som om du forklarer noe til en venn. Det gjør ingenting om det ikke er perfekt. Ta på nytt hvis du snubler.</p>
+    <p>Les teksten slik den står. Telefonnumre leses siffer for siffer.</p>
+  </div>`;
+  $('#f').onsubmit = async (e) => {
+    e.preventDefault();
+    await kall({ handling: 'leser', navn: $('#navn').value, samtykke: $('#samtykke').checked, kreditering: $('#kred').checked });
+    lagret('samtykke', '1'); lagret('navn', $('#navn').value.trim()); visListe();
+  };
+}
+
+function statusFor(p) {
+  const s = data.status.find((x) => x.id === p.id);
+  const lest = data.opptak.filter((o) => o.innhold_id === p.id).length;
+  if (!s) return { tekst: 'Ledig', kl: '', min: false, ledig: true };
+  if (s.laast) return { tekst: `Ferdig, ${esc(s.leser_navn)}`, kl: 'ferdig', min: s.leser_id === leserId };
+  if (s.leser_id === leserId) return { tekst: `Din, ${lest} av ${p.deler.length}`, kl: 'din', min: true };
+  return { tekst: `${esc(s.leser_navn)}, ${lest} av ${p.deler.length}`, kl: '', min: false };
+}
+
+async function hent() { data = await kall({ handling: 'innhold' }); }
+
+function visListe() {
+  bunn.hidden = true; valgt = null;
+  const ferdige = data.status.filter((s) => s.laast).length;
+  const filtrert = data.innhold.filter((p) => {
+    const st = statusFor(p);
+    return fane === 'mine' ? st.min : fane === 'ledige' ? st.ledig : true;
+  });
+  const grupper = [...new Set(filtrert.map((p) => p.gruppe))];
+  app.innerHTML = `<h1>Les inn Reiret</h1>
+  <p class="dempet">${ferdige} av ${data.innhold.length} er lest inn. Velg noe som er ledig, så er det ditt til du er ferdig.</p>
+  <div class="faner" role="group" aria-label="Vis">
+    ${[['ledige', 'Ledige'], ['mine', 'Mine'], ['alle', 'Alle']].map(([k, t]) => `<button data-fane="${k}" aria-pressed="${fane === k}">${t}</button>`).join('')}
+  </div>
+  ${grupper.length ? grupper.map((g) => `<h2>${esc(g)}</h2><ul class="liste">${filtrert.filter((p) => p.gruppe === g).map((p) => { const st = statusFor(p); return `<li><button data-id="${esc(p.id)}"><span>${esc(p.tittel)}</span><span class="merke ${st.kl}">${st.tekst}</span></button></li>`; }).join('')}</ul>`).join('') : `<p class="kort dempet">${fane === 'mine' ? 'Du har ikke tatt noe ennå.' : 'Ingenting her.'}</p>`}`;
+  app.querySelectorAll('[data-fane]').forEach((b) => (b.onclick = () => { fane = b.dataset.fane; visListe(); }));
+  app.querySelectorAll('[data-id]').forEach((b) => (b.onclick = () => apne(b.dataset.id)));
+  window.scrollTo(0, 0);
+}
+
+async function apne(id) {
+  const p = data.innhold.find((x) => x.id === id);
+  const st = statusFor(p);
+  if (st.ledig) {
+    app.innerHTML = `<button class="tekstknapp" id="tilbake">‹ Tilbake</button><h1>${esc(p.tittel)}</h1>
+    <p class="dempet">${p.deler.length} deler, omtrent ${Math.max(1, Math.round(p.deler.reduce((n, d) => n + d.tekst.split(/\s+/).length, 0) / 150))} minutter å lese. Når du tar den, leser bare du denne, så stemmen er den samme hele veien.</p>
+    <button class="hoved" id="ta" style="margin-top:1rem">Jeg tar denne</button>`;
+    $('#tilbake').onclick = visListe;
+    $('#ta').onclick = async () => {
+      try { await kall({ handling: 'ta', id }); await hent(); valgt = id; delIndeks = forsteMangler(p); visDel(); }
+      catch (e) { if (e.message === 'tatt') { alert('Noen andre rakk å ta denne. Velg en annen.'); await hent(); visListe(); } }
+    };
+    return;
+  }
+  if (!st.min) {
+    app.innerHTML = `<button class="tekstknapp" id="tilbake">‹ Tilbake</button><h1>${esc(p.tittel)}</h1><p class="dempet">${st.tekst}. Den er tatt av noen andre.</p>`;
+    $('#tilbake').onclick = visListe; return;
+  }
+  valgt = id; delIndeks = forsteMangler(p); visDel();
+}
+
+const harOpptak = (nokkel) => data.opptak.some((o) => o.nokkel === nokkel);
+function forsteMangler(p) { const i = p.deler.findIndex((d) => !harOpptak(d.nokkel)); return i < 0 ? 0 : i; }
+
+let opptaker = null; let biter = []; let startTid = 0; let klokke = null; let nyttOpptak = null; let lyd = null;
+
+function visDel() {
+  const p = data.innhold.find((x) => x.id === valgt);
+  const s = data.status.find((x) => x.id === valgt);
+  const laast = !!s?.laast;
+  const d = p.deler[delIndeks];
+  const alle = p.deler.every((x) => harOpptak(x.nokkel));
+  nyttOpptak = null;
+  app.innerHTML = `<button class="tekstknapp" id="tilbake">‹ Alle</button>
+  <h1>${esc(p.tittel)}</h1>
+  <div class="deler" role="group" aria-label="Deler">${p.deler.map((x, i) => `<button data-i="${i}" class="${harOpptak(x.nokkel) ? 'ok' : ''}" aria-current="${i === delIndeks}" aria-label="Del ${i + 1}${harOpptak(x.nokkel) ? ', lest inn' : ''}">${i + 1}</button>`).join('')}</div>
+  <div class="kort stakk">
+    <p class="liten dempet" style="margin:0">Del ${delIndeks + 1} av ${p.deler.length}: ${esc(d.tittel)}${harOpptak(d.nokkel) ? ' · lest inn' : ''}</p>
+    <p class="deltekst">${esc(d.tekst)}</p>
+  </div>
+  ${laast ? '<p class="kort dempet" style="margin-top:1rem">Denne er ferdig og låst. Takk!</p>' : `
+  <div class="rad" style="margin-top:1rem">
+    ${harOpptak(d.nokkel) ? '<button class="sekundar" id="hor">Hør opptaket</button>' : ''}
+    ${alle ? '<button class="hoved" id="ferdig" style="width:auto">Ferdig, lås den</button>' : ''}
+    <button class="tekstknapp" id="gifra">Gi den fra meg</button>
+  </div>`}
+  <p class="feil" id="feil" hidden></p>`;
+  $('#tilbake').onclick = async () => { stoppAlt(); await hent(); visListe(); };
+  app.querySelectorAll('[data-i]').forEach((b) => (b.onclick = () => { stoppAlt(); delIndeks = Number(b.dataset.i); visDel(); }));
+  if (!laast) {
+    $('#hor')?.addEventListener('click', async () => { const { url } = await kall({ handling: 'lytt', nokkel: d.nokkel }); spill(url); });
+    $('#ferdig')?.addEventListener('click', async () => {
+      try { await kall({ handling: 'ferdig', id: valgt }); await hent(); alert('Takk! Den er lest inn og låst.'); visListe(); }
+      catch (e) { visFeil(e.svar?.antall ? `Det mangler ${e.svar.antall} deler.` : 'Noe gikk galt. Prøv igjen.'); }
+    });
+    $('#gifra').onclick = async () => {
+      if (!confirm('Gi den fra deg? Opptakene du har gjort her, slettes.')) return;
+      await kall({ handling: 'gi-fra', id: valgt }); await hent(); visListe();
+    };
+  }
+  visBunn(laast);
+  window.scrollTo(0, 0);
+}
+
+function visFeil(t) { const f = $('#feil'); if (f) { f.textContent = t; f.hidden = false; } }
+
+function visBunn(laast) {
+  if (laast) { bunn.hidden = true; return; }
+  bunn.hidden = false;
+  const tar = opptaker?.state === 'recording';
+  bunn.innerHTML = `<div class="rad">
+    ${nyttOpptak && !tar ? `<button class="sekundar" id="spill">Spill av</button><button class="hoved" id="lagre" style="flex:1">Lagre og neste</button><button class="tekstknapp" id="paanytt">Ta på nytt</button>` :
+      `<button class="opptak ${tar ? 'tar' : ''}" id="opptak">${tar ? 'Stopp' : 'Ta opp'}</button><span class="tid" id="tid">${tar ? '0:00' : ''}</span>`}
+  </div>`;
+  $('#opptak')?.addEventListener('click', () => (tar ? stopp() : taOpp()));
+  $('#spill')?.addEventListener('click', () => spill(URL.createObjectURL(nyttOpptak.blob)));
+  $('#paanytt')?.addEventListener('click', () => { nyttOpptak = null; taOpp(); });
+  $('#lagre')?.addEventListener('click', lagre);
+}
+
+function velgFormat() {
+  for (const t of ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm']) if (window.MediaRecorder?.isTypeSupported?.(t)) return t;
+  return '';
+}
+
+async function taOpp() {
+  stoppLyd();
+  let strom;
+  try { strom = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: true, autoGainControl: false, channelCount: 1 } }); }
+  catch { visFeil('Fikk ikke bruke mikrofonen. Tillat mikrofonen for siden i nettleseren.'); return; }
+  const type = velgFormat();
+  opptaker = new MediaRecorder(strom, type ? { mimeType: type, audioBitsPerSecond: 96000 } : undefined);
+  biter = [];
+  opptaker.ondataavailable = (e) => e.data.size && biter.push(e.data);
+  opptaker.onstop = () => {
+    strom.getTracks().forEach((t) => t.stop());
+    const mime = opptaker.mimeType || type || 'audio/webm';
+    nyttOpptak = { blob: new Blob(biter, { type: mime }), ext: mime.includes('mp4') ? 'mp4' : 'webm', sekunder: (Date.now() - startTid) / 1000 };
+    clearInterval(klokke); visBunn(false);
+  };
+  opptaker.start(1000);
+  startTid = Date.now();
+  visBunn(false);
+  klokke = setInterval(() => { const s = Math.floor((Date.now() - startTid) / 1000); const t = $('#tid'); if (t) t.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; }, 250);
+}
+
+function stopp() { if (opptaker?.state === 'recording') opptaker.stop(); }
+function spill(url) { stoppLyd(); lyd = new Audio(url); lyd.play(); }
+function stoppLyd() { if (lyd) { lyd.pause(); lyd = null; } }
+function stoppAlt() { stoppLyd(); if (opptaker?.state === 'recording') { opptaker.onstop = null; opptaker.stop(); } clearInterval(klokke); nyttOpptak = null; }
+
+async function lagre() {
+  const p = data.innhold.find((x) => x.id === valgt);
+  const d = p.deler[delIndeks];
+  const knapp = $('#lagre'); knapp.disabled = true; knapp.textContent = 'Lagrer …';
+  try {
+    const { url, fil } = await kall({ handling: 'last-opp', id: valgt, nokkel: d.nokkel, ext: nyttOpptak.ext });
+    const r = await fetch(url, { method: 'PUT', headers: { 'content-type': nyttOpptak.blob.type, 'x-upsert': 'true' }, body: nyttOpptak.blob });
+    if (!r.ok) throw new Error('opplasting');
+    await kall({ handling: 'lagret', id: valgt, nokkel: d.nokkel, ext: nyttOpptak.ext, sekunder: nyttOpptak.sekunder, fil });
+    data.opptak = data.opptak.filter((o) => o.nokkel !== d.nokkel).concat([{ nokkel: d.nokkel, innhold_id: valgt, leser_id: leserId }]);
+    const neste = p.deler.findIndex((x, i) => i > delIndeks && !harOpptak(x.nokkel));
+    delIndeks = neste >= 0 ? neste : forsteMangler(p);
+    visDel();
+  } catch {
+    knapp.disabled = false; knapp.textContent = 'Lagre og neste';
+    visFeil('Lagringen feilet. Sjekk nettet og prøv igjen. Opptaket er ikke borte.');
+  }
+}
+
+async function start() {
+  if (!lagret('kode')) return visKode();
+  try { await hent(); } catch (e) { if (e.message !== 'kode') { app.innerHTML = '<p class="feil">Fikk ikke kontakt. Prøv igjen om litt.</p>'; } return; }
+  if (!lagret('samtykke')) return visSamtykke();
+  visListe();
+}
+start();
+</script>
+</body>
+</html>
