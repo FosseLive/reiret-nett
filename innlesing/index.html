@@ -61,8 +61,17 @@ button[disabled] { opacity: 0.45; cursor: default; }
 </style>
 </head>
 <body>
-<main id="app" aria-live="polite"></main>
+<main id="app" aria-live="polite"><h1>Les inn Reiret</h1><p class="dempet" id="laster">Laster …</p>
+<noscript><p class="feil">Siden trenger JavaScript. Slå det på, eller åpne lenken i Safari eller Chrome.</p></noscript></main>
 <div class="bunn" id="bunn" hidden></div>
+<script>
+// Stopper hovedskriptet (for eksempel i en gammel nettleser), skal ikke siden bli stående og laste
+// (08.10). Eget skript med gammel syntaks, så det virker også når hovedskriptet ikke kan leses.
+window.addEventListener('error', function () {
+  var l = document.getElementById('laster');
+  if (l) { l.className = 'feil'; l.textContent = 'Siden virker ikke i denne nettleseren. Åpne lenken i Safari eller Chrome, og oppdater telefonen hvis den er gammel.'; }
+});
+</script>
 <script>
 const API = 'https://sfxxnisneospalfijczz.supabase.co/functions/v1/innlesing';
 const $ = (s) => document.querySelector(s);
@@ -70,12 +79,22 @@ const app = $('#app');
 const bunn = $('#bunn');
 const lagret = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch { return null; } };
 let leserId = lagret('leserId');
-if (!leserId) { leserId = crypto.randomUUID(); lagret('leserId', leserId); }
-let data = null; let fane = 'ledige'; let valgt = null; let delIndeks = 0;
+const nyId = () => crypto.randomUUID?.() ?? '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16));
+if (!leserId) { leserId = nyId(); lagret('leserId', leserId); }
+let data = null; const tekster = {}; let fane = 'ledige'; let valgt = null; let delIndeks = 0;
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
+/** fetch med tidsgrense, så et dårlig nett gir en feilmelding i stedet for evig venting. */
+async function hentMedFrist(url, valg, sekunder) {
+  const stopp = new AbortController();
+  const t = setTimeout(() => stopp.abort(), sekunder * 1000);
+  try { return await fetch(url, { ...valg, signal: stopp.signal }); }
+  catch { throw new TypeError('nett'); }
+  finally { clearTimeout(t); }
+}
+
 async function kall(kropp) {
-  const r = await fetch(API, { method: 'POST', headers: { 'content-type': 'application/json', 'x-lesekode': lagret('kode') || '' }, body: JSON.stringify({ leserId, ...kropp }) });
+  const r = await hentMedFrist(API, { method: 'POST', headers: { 'content-type': 'application/json', 'x-lesekode': lagret('kode') || '' }, body: JSON.stringify({ leserId, ...kropp }) }, 25);
   const j = await r.json().catch(() => ({}));
   if (r.status === 401) { lagret('kode', null); visKode('Koden stemmer ikke. Prøv igjen.'); throw new Error('kode'); }
   // Samtykket finnes ikke på serveren (for eksempel en annen nettleser): be om det på nytt.
@@ -85,9 +104,9 @@ async function kall(kropp) {
 }
 
 /** Knapp som viser at den jobber, og en melding når noe går galt. */
-async function jobb(knapp, tekst, fn) {
-  const forrige = knapp.textContent;
-  knapp.disabled = true; knapp.textContent = tekst; knapp.setAttribute('aria-busy', 'true');
+async function jobb(knapp, tekst, fn, mal = knapp) {
+  const forrige = mal.textContent;
+  knapp.disabled = true; mal.textContent = tekst; knapp.setAttribute('aria-busy', 'true');
   try { await fn(); }
   catch (e) {
     if (e.message === 'kode' || e.message === 'samtykke') return;
@@ -95,7 +114,7 @@ async function jobb(knapp, tekst, fn) {
       ?? (e instanceof TypeError ? 'Fikk ikke kontakt. Sjekk nettet og prøv igjen.' : 'Noe gikk galt. Prøv igjen.');
     visFeil(melding);
   } finally {
-    if (knapp.isConnected) { knapp.disabled = false; knapp.textContent = forrige; knapp.removeAttribute('aria-busy'); }
+    if (knapp.isConnected) { knapp.disabled = false; mal.textContent = forrige; knapp.removeAttribute('aria-busy'); }
   }
 }
 
@@ -108,13 +127,13 @@ function visKode(feil) {
     ${feil ? `<p class="feil">${esc(feil)}</p>` : ''}
     <button class="hoved">Fortsett</button>
   </form>`;
-  $('#f').onsubmit = (e) => { e.preventDefault(); lagret('kode', $('#kode').value.trim()); start(); };
+  $('#f').onsubmit = (e) => { e.preventDefault(); lagret('kode', $('#kode').value.trim()); const k = $('#f button'); k.disabled = true; k.textContent = 'Sjekker koden …'; start(); };
 }
 
 /** Velkommen og takk (Jonathan 07.10): vises etter koden, før navn og samtykke. */
 function visVelkommen() {
   bunn.hidden = true;
-  const totalt = data.innhold.reduce((n, p) => n + p.deler.length, 0);
+  const totalt = data.innhold.reduce((n, p) => n + p.antall, 0);
   app.innerHTML = `<h1>Tusen takk for at du vil hjelpe!</h1>
   <p>Reiret er en app for foreldre som venter barn, og for det første året etter fødselen. Den forklarer hver uke hva som skjer med babyen og med dere, og hva som er lurt å gjøre, sjekket mot norske kilder som Helsenorge.</p>
   <p>Mange foreldre vil heller lytte enn lese, for eksempel i bilen, på tur med vogna eller midt på natta med en baby på armen. Derfor vil vi at alt i appen skal kunne leses opp av ekte, varme stemmer i stedet for en datastemme. Det er der du kommer inn.</p>
@@ -165,11 +184,12 @@ function statusFor(p) {
   const lest = data.opptak.filter((o) => o.innhold_id === p.id).length;
   if (!s) return { tekst: 'Ledig', kl: '', min: false, ledig: true };
   if (s.laast) return { tekst: `Ferdig, ${esc(s.leser_navn)}`, kl: 'ferdig', min: s.leser_id === leserId };
-  if (s.leser_id === leserId) return { tekst: `Din, ${lest} av ${p.deler.length}`, kl: 'din', min: true };
-  return { tekst: `${esc(s.leser_navn)}, ${lest} av ${p.deler.length}`, kl: '', min: false };
+  if (s.leser_id === leserId) return { tekst: `Din, ${lest} av ${p.antall}`, kl: 'din', min: true };
+  return { tekst: `${esc(s.leser_navn)}, ${lest} av ${p.antall}`, kl: '', min: false };
 }
 
-async function hent() { data = await kall({ handling: 'innhold' }); }
+async function hent() { data = await kall({ handling: 'liste' }); }
+async function hentTekst(id) { if (!tekster[id]) tekster[id] = (await kall({ handling: 'tekst', id })).deler; return tekster[id]; }
 
 function visListe() {
   bunn.hidden = true; valgt = null;
@@ -188,7 +208,7 @@ function visListe() {
   ${grupper.length ? grupper.map((g) => `<h2>${esc(g)}</h2><ul class="liste">${filtrert.filter((p) => p.gruppe === g).map((p) => { const st = statusFor(p); return `<li><button data-id="${esc(p.id)}"><span>${esc(p.tittel)}</span><span class="merke ${st.kl}">${st.tekst}</span></button></li>`; }).join('')}</ul>`).join('') : `<p class="kort dempet">${fane === 'mine' ? 'Du har ikke tatt noe ennå.' : 'Ingenting her.'}</p>`}`;
   $('#om').onclick = visVelkommen;
   app.querySelectorAll('[data-fane]').forEach((b) => (b.onclick = () => { fane = b.dataset.fane; visListe(); }));
-  app.querySelectorAll('[data-id]').forEach((b) => (b.onclick = () => apne(b.dataset.id)));
+  app.querySelectorAll('[data-id]').forEach((b) => (b.onclick = () => jobb(b, 'Henter …', () => apne(b.dataset.id), b.querySelector('.merke'))));
   window.scrollTo(0, 0);
 }
 
@@ -197,17 +217,18 @@ async function apne(id) {
   const st = statusFor(p);
   if (st.ledig) {
     // Se hele teksten først (Jonathan 07.10). Ingenting er tatt før man trykker «Jeg tar denne».
-    const min = Math.max(1, Math.round(p.deler.reduce((n, d) => n + d.tekst.split(/\s+/).length, 0) / 150));
+    const deler = await hentTekst(id);
+    const min = Math.max(1, Math.round(p.ord / 150));
     app.innerHTML = `<button class="tekstknapp" id="tilbake">‹ Tilbake</button><h1>${esc(p.tittel)}</h1>
-    <p class="dempet">${p.deler.length} deler, omtrent ${min} minutter å lese. Les gjennom, og ta den hvis den passer for deg. Da leser bare du denne, så stemmen er den samme hele veien.</p>
-    ${p.deler.map((d, i) => `<div class="kort stakk" style="margin-top:0.75rem"><p class="liten dempet" style="margin:0">Del ${i + 1}: ${esc(d.tittel)}</p><p>${esc(d.tekst)}</p></div>`).join('')}`;
+    <p class="dempet">${deler.length} deler, omtrent ${min} minutter å lese. Les gjennom, og ta den hvis den passer for deg. Da leser bare du denne, så stemmen er den samme hele veien.</p>
+    ${deler.map((d, i) => `<div class="kort stakk" style="margin-top:0.75rem"><p class="liten dempet" style="margin:0">Del ${i + 1}: ${esc(d.tittel)}</p><p>${esc(d.tekst)}</p></div>`).join('')}`;
     bunnFeil();
     bunn.hidden = false;
     bunn.innerHTML = `<div class="rad"><button class="sekundar" id="ikke">Ikke denne</button><button class="hoved" id="ta" style="flex:1;width:auto">Jeg tar denne</button></div>`;
     $('#tilbake').onclick = visListe;
     $('#ikke').onclick = visListe;
     $('#ta').onclick = (e) => jobb(e.currentTarget, 'Tar den …', async () => {
-      await kall({ handling: 'ta', id }); await hent(); valgt = id; delIndeks = forsteMangler(p); visDel();
+      await kall({ handling: 'ta', id }); await hent(); valgt = id; delIndeks = forsteMangler(id); visDel();
     });
     window.scrollTo(0, 0);
     return;
@@ -216,11 +237,12 @@ async function apne(id) {
     app.innerHTML = `<button class="tekstknapp" id="tilbake">‹ Tilbake</button><h1>${esc(p.tittel)}</h1><p class="dempet">${st.tekst}. Den er tatt av noen andre.</p>`;
     $('#tilbake').onclick = visListe; return;
   }
-  valgt = id; delIndeks = forsteMangler(p); visDel();
+  await hentTekst(id);
+  valgt = id; delIndeks = forsteMangler(id); visDel();
 }
 
 const harOpptak = (nokkel) => data.opptak.some((o) => o.nokkel === nokkel);
-function forsteMangler(p) { const i = p.deler.findIndex((d) => !harOpptak(d.nokkel)); return i < 0 ? 0 : i; }
+function forsteMangler(id) { const i = tekster[id].findIndex((d) => !harOpptak(d.nokkel)); return i < 0 ? 0 : i; }
 
 let opptaker = null; let biter = []; let startTid = 0; let klokke = null; let nyttOpptak = null; let lyd = null;
 
@@ -228,14 +250,15 @@ function visDel() {
   const p = data.innhold.find((x) => x.id === valgt);
   const s = data.status.find((x) => x.id === valgt);
   const laast = !!s?.laast;
-  const d = p.deler[delIndeks];
-  const alle = p.deler.every((x) => harOpptak(x.nokkel));
+  const deler = tekster[valgt];
+  const d = deler[delIndeks];
+  const alle = deler.every((x) => harOpptak(x.nokkel));
   nyttOpptak = null;
   app.innerHTML = `<button class="tekstknapp" id="tilbake">‹ Alle</button>
   <h1>${esc(p.tittel)}</h1>
-  <div class="deler" role="group" aria-label="Deler">${p.deler.map((x, i) => `<button data-i="${i}" class="${harOpptak(x.nokkel) ? 'ok' : ''}" aria-current="${i === delIndeks}" aria-label="Del ${i + 1}${harOpptak(x.nokkel) ? ', lest inn' : ''}">${i + 1}</button>`).join('')}</div>
+  <div class="deler" role="group" aria-label="Deler">${deler.map((x, i) => `<button data-i="${i}" class="${harOpptak(x.nokkel) ? 'ok' : ''}" aria-current="${i === delIndeks}" aria-label="Del ${i + 1}${harOpptak(x.nokkel) ? ', lest inn' : ''}">${i + 1}</button>`).join('')}</div>
   <div class="kort stakk">
-    <p class="liten dempet" style="margin:0">Del ${delIndeks + 1} av ${p.deler.length}: ${esc(d.tittel)}${harOpptak(d.nokkel) ? ' · lest inn' : ''}</p>
+    <p class="liten dempet" style="margin:0">Del ${delIndeks + 1} av ${deler.length}: ${esc(d.tittel)}${harOpptak(d.nokkel) ? ' · lest inn' : ''}</p>
     <p class="deltekst">${esc(d.tekst)}</p>
   </div>
   ${laast ? '<p class="kort dempet" style="margin-top:1rem">Denne er ferdig og låst. Takk!</p>' : `
@@ -314,17 +337,17 @@ function stoppLyd() { if (lyd) { lyd.pause(); lyd = null; } }
 function stoppAlt() { stoppLyd(); if (opptaker?.state === 'recording') { opptaker.onstop = null; opptaker.stop(); } clearInterval(klokke); nyttOpptak = null; }
 
 async function lagre() {
-  const p = data.innhold.find((x) => x.id === valgt);
-  const d = p.deler[delIndeks];
+  const deler = tekster[valgt];
+  const d = deler[delIndeks];
   const knapp = $('#lagre'); knapp.disabled = true; knapp.textContent = 'Lagrer …';
   try {
     const { url, fil } = await kall({ handling: 'last-opp', id: valgt, nokkel: d.nokkel, ext: nyttOpptak.ext });
-    const r = await fetch(url, { method: 'PUT', headers: { 'content-type': nyttOpptak.blob.type, 'x-upsert': 'true' }, body: nyttOpptak.blob });
+    const r = await hentMedFrist(url, { method: 'PUT', headers: { 'content-type': nyttOpptak.blob.type, 'x-upsert': 'true' }, body: nyttOpptak.blob }, 120);
     if (!r.ok) throw new Error('opplasting');
     await kall({ handling: 'lagret', id: valgt, nokkel: d.nokkel, ext: nyttOpptak.ext, sekunder: nyttOpptak.sekunder, fil });
     data.opptak = data.opptak.filter((o) => o.nokkel !== d.nokkel).concat([{ nokkel: d.nokkel, innhold_id: valgt, leser_id: leserId }]);
-    const neste = p.deler.findIndex((x, i) => i > delIndeks && !harOpptak(x.nokkel));
-    delIndeks = neste >= 0 ? neste : forsteMangler(p);
+    const neste = deler.findIndex((x, i) => i > delIndeks && !harOpptak(x.nokkel));
+    delIndeks = neste >= 0 ? neste : forsteMangler(valgt);
     visDel();
   } catch {
     knapp.disabled = false; knapp.textContent = 'Lagre og neste';
@@ -334,7 +357,14 @@ async function lagre() {
 
 async function start() {
   if (!lagret('kode')) return visKode();
-  try { await hent(); } catch (e) { if (e.message !== 'kode') { app.innerHTML = '<p class="feil">Fikk ikke kontakt. Prøv igjen om litt.</p>'; } return; }
+  const l = $('#laster'); if (l) l.textContent = 'Henter lista …';
+  try { await hent(); } catch (e) {
+    if (e.message !== 'kode') {
+      app.innerHTML = '<h1>Les inn Reiret</h1><p class="feil">Fikk ikke kontakt. Sjekk nettet og prøv igjen.</p><button class="hoved" id="igjen">Prøv igjen</button>';
+      $('#igjen').onclick = () => { app.innerHTML = '<h1>Les inn Reiret</h1><p class="dempet" id="laster">Henter lista …</p>'; start(); };
+    }
+    return;
+  }
   if (!lagret('velkommen')) return visVelkommen();
   if (!lagret('samtykke')) return visSamtykke();
   visListe();
