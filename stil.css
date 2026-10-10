@@ -102,6 +102,12 @@ a:hover { text-decoration-thickness: 2px; }
 .app-store { display: inline-block; line-height: 0; border-radius: 0.75rem; }
 .app-store img { display: block; width: auto; height: 3.25rem; }
 .app-store:focus-visible { outline: 3px solid var(--mose); outline-offset: 4px; }
+/* App Store og Google Play side om side (Android, 10.10). Googles merke har luft rundt seg i
+   bildet. Google ber om at det er minst like stort som andre butikkmerker, så det skaleres opp
+   og lufta trekkes inn igjen. */
+.app-store + .app-store { margin-left: 0.75rem; }
+.google-play img { height: 4.15rem; margin: -0.45rem 0; }
+.slutt .google-play img { height: 4.15rem; margin: -0.45rem 0; }
 
 .ingress { font-size: clamp(1.15rem, 1.8vw, 1.35rem); color: var(--dempet); max-width: 30rem; margin: 0 0 2rem; }
 
