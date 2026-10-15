@@ -1,6 +1,6 @@
 // «Del Reiret»: delingsarket på telefonen (Web Share), ellers kopieres lenken. Knappene står
 // skjult i HTML-en og vises først her, så ingen ser en knapp som ikke virker uten skript.
-const ADRESSE = 'https://reiret.fosselien.no/';
+const ADRESSE = 'https://reiretapp.no/';
 const DATA = {
   title: 'Reiret',
   text: 'Svangerskapsappen for kommende fedre og partnere.',
