@@ -72,7 +72,7 @@ a:hover { text-decoration-thickness: 2px; }
    Jonathan fortsatt at det gikk for fort på laptopen. helt.js gjør også etterfølgingen roligere her. */
 @media (hover: hover) and (pointer: fine) { .levende .helt { height: 450vh; } }
 /* Ukene glir opp over maleriet mens det løses opp i papir, så det aldri står en tom skjerm. */
-.levende .uker { margin-top: -35vh; }
+.levende .oversikt { margin-top: -35vh; }
 .scene { position: relative; height: 100%; overflow: hidden; background: var(--papir); }
 .levende .scene { position: sticky; top: 0; height: 100vh; min-height: 34rem; }
 .scene picture, .maleri, .scene canvas, .dis { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -93,10 +93,17 @@ a:hover { text-decoration-thickness: 2px; }
 .helt h1 .ord { display: inline-block; white-space: nowrap; }
 .helt h1 .ord > span { display: inline-block; }
 .helt .ingress { color: var(--tekst); max-width: 27rem; text-wrap: pretty; margin: 0; }
-/* App Store-merket står nederst, over åsene. Løftet over Safaris verktøylinje på iPhone. */
-.helt .hent {
+/* App Store-merket står nederst, over åsene. Løftet over Safaris verktøylinje på iPhone.
+   Prisen står under, som hos Augneblink, så ingen må lete etter den (23.10). */
+.helt .start {
   position: absolute; z-index: 2; left: max(var(--kant), calc((100% - var(--bred)) / 2 + var(--kant)));
-  bottom: 2rem; bottom: calc(2rem + 100lvh - 100svh); margin: 0;
+  right: var(--kant); bottom: 2rem; bottom: calc(2rem + 100lvh - 100svh); margin: 0;
+  display: grid; gap: 0.75rem; justify-items: start;
+}
+.helt .start .hent { margin: 0; }
+.helt .vilkaar {
+  margin: 0; padding: 0.35rem 0.85rem; border-radius: 999px; background: rgb(255 253 248 / 0.88);
+  font-size: 0.95rem; line-height: 1.35; color: var(--tekst);
 }
 /* Apples merke: minst 40 punkter høyt og med luft rundt, uendret ellers (Apples retningslinjer). */
 .app-store { display: inline-block; line-height: 0; border-radius: 0.75rem; }
@@ -174,7 +181,7 @@ a:hover { text-decoration-thickness: 2px; }
 .oppgave { margin: 0; padding-top: 1rem; border-top: 1px solid var(--strek); font-size: 1rem; }
 
 /* Slik ser appen ut: telefonene side om side, rullbare på mobil. */
-.telefoner { padding: clamp(4rem, 8vw, 7rem) 0; }
+.telefoner { padding: clamp(4rem, 8vw, 7rem) 0; background: var(--krem); }
 .telefoner .hode { max-width: var(--bred); margin: 0 auto 2.5rem; padding: 0 var(--kant); }
 .telefoner .rad {
   display: flex; gap: clamp(1.25rem, 3vw, 2.5rem); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
@@ -229,12 +236,62 @@ a:hover { text-decoration-thickness: 2px; }
 .del figure { margin: 0; overflow: hidden; border-radius: 1.5rem; }
 .del figure img { transform: scale(1.06); }
 .del p { color: var(--dempet); max-width: var(--smal); margin: 0 0 1rem; }
+/* Skjermbilder i telefonramme i stedet for illustrasjonen. To telefoner står forskjøvet, den
+   andre litt lavere og over den første, som på augneblink.no (23.10). */
+.del figure.mobiler { overflow: visible; border-radius: 0; display: flex; justify-content: center; align-items: flex-start; padding: 0.5rem 0 1rem; }
+.del figure.mobiler img {
+  transform: none; width: min(17rem, 72%); border-radius: 2.4rem; border: 7px solid var(--tekst);
+  background: var(--tekst); box-shadow: 0 24px 48px rgb(30 39 35 / 0.18);
+}
+.del figure.mobiler.par img { width: min(15rem, 50%); }
+.del figure.mobiler.par img + img { margin: 3.5rem 0 0 -2.5rem; position: relative; }
 .tone-nype { background: var(--nype); }
 .tone-fjord { background: var(--fjord); }
 .tone-mose { background: var(--mose-lys); }
 .tone-lyng { background: var(--lyng); }
 .kilder { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.5rem 0 0; padding: 0; list-style: none; }
 .kilder li { background: var(--flate); border-radius: 999px; padding: 0.35rem 0.9rem; font-size: 0.95rem; font-weight: 600; }
+.kilder a { color: var(--tekst); text-decoration: none; }
+.kilder a:hover { text-decoration: underline; }
+.del .uavhengig { font-size: 1rem; margin-top: 1.25rem; }
+
+/* Fire ting, i én app: rask oversikt rett etter heroen (lært av augneblink.no, 23.10). */
+.oversikt { position: relative; z-index: 1; padding: clamp(4rem, 8vw, 7rem) var(--kant) clamp(1rem, 3vw, 2rem); }
+.oversikt .innhold, .alt .innhold, .pris .innhold { max-width: var(--bred); margin: 0 auto; }
+.oversikt .hode, .alt .hode, .pris .hode { max-width: var(--smal); margin-bottom: 2.5rem; }
+.oversikt h2, .alt h2, .pris h2 {
+  font-size: clamp(2rem, 4.2vw, 3.25rem); line-height: 1.05; letter-spacing: -0.025em; font-weight: 800; margin: 0 0 1rem;
+}
+.oversikt .hode p, .alt .hode p, .pris .hode p { color: var(--dempet); margin: 0; }
+.kort4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.5rem); }
+.kort4 article { background: var(--flate); border-radius: 1.25rem; overflow: hidden; box-shadow: 0 1px 2px rgb(30 39 35 / 0.06), 0 10px 28px rgb(30 39 35 / 0.06); }
+.kort4 img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.kort4 h3 { font-size: 1.25rem; letter-spacing: -0.015em; line-height: 1.2; margin: 1rem 1.1rem 0.4rem; }
+.kort4 p { color: var(--dempet); font-size: 1rem; line-height: 1.45; margin: 0 1.1rem 1.25rem; }
+
+/* Alt som er med: hele appen som avkrysningslister, gruppert. */
+.alt { background: var(--bakgrunn); padding: clamp(4rem, 8vw, 7rem) var(--kant); scroll-margin-top: 1rem; }
+.grupper { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 2.5vw, 1.75rem); }
+.grupper article { background: var(--flate); border-radius: 1.25rem; padding: clamp(1.25rem, 3vw, 2rem); }
+.grupper h3 { font-size: clamp(1.3rem, 2vw, 1.55rem); letter-spacing: -0.015em; margin: 0 0 1rem; }
+.grupper ul, .pris .med { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.7rem; }
+.grupper li, .pris .med li { position: relative; padding-left: 1.75rem; line-height: 1.45; text-wrap: pretty; }
+.grupper li::before, .pris .med li::before {
+  content: ''; position: absolute; left: 0.15rem; top: 0.35em; width: 0.75rem; height: 0.4rem;
+  border-left: 2px solid var(--mose); border-bottom: 2px solid var(--mose); transform: rotate(-45deg);
+}
+
+/* Pris: to kort og det som gjelder begge. */
+.pris { padding: clamp(4rem, 8vw, 7rem) var(--kant); scroll-margin-top: 1rem; }
+.priser { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 2.5vw, 1.75rem); max-width: 46rem; margin-bottom: 2rem; }
+.priser article { background: var(--flate); border-radius: 1.5rem; padding: clamp(1.25rem, 3vw, 2rem); box-shadow: 0 1px 2px rgb(30 39 35 / 0.06), 0 10px 28px rgb(30 39 35 / 0.06); }
+.priser .aar { background: var(--tekst); color: var(--flate); }
+.priser h3 { font-size: 1.2rem; margin: 0; }
+.priser .belop { font-size: clamp(2.6rem, 6vw, 3.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin: 0.5rem 0 0.25rem; font-variant-numeric: tabular-nums; }
+.priser .per { margin: 0; color: var(--dempet); font-size: 1rem; }
+.priser .aar .per { color: #c9cfc7; }
+.pris .med { max-width: 46rem; }
+.pris .merknad { color: var(--dempet); font-size: 1rem; margin: 1.75rem 0 0; max-width: var(--smal); }
 
 /* Personvernløftet */
 .loefte { background: var(--bakgrunn); padding: clamp(4rem, 9vw, 8rem) var(--kant); }
@@ -287,6 +344,13 @@ footer .sosialt a:hover, footer .sosialt button:hover { border-color: var(--bakg
   .ukekort img { width: 7rem; height: 7rem; }
   .del:nth-of-type(even) .innhold figure { order: 0; }
   .topplinje nav { gap: 1rem; }
+  .topplinje .bred-meny { display: none; }
+  .kort4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grupper, .priser { grid-template-columns: 1fr; }
+}
+@media (max-width: 420px) {
+  .kort4 h3 { font-size: 1.1rem; margin: 0.85rem 0.85rem 0.3rem; }
+  .kort4 p { font-size: 0.95rem; margin: 0 0.85rem 1rem; }
 }
 
 /* Stående skjermer får det høye maleriet, med redet litt til høyre. Svært brede får 21:9. */

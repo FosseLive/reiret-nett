@@ -27,7 +27,7 @@ function start(helt) {
   document.documentElement.classList.add('levende');
   const scene = helt.querySelector('.scene');
   const bilde = helt.querySelector('.maleri');
-  const tekster = helt.querySelectorAll('.tekst, .hent');
+  const tekster = helt.querySelectorAll('.tekst, .start');
   const dis = helt.querySelector('.dis');
   const lerret = helt.querySelector('canvas');
   const soek = new URLSearchParams(location.search);
