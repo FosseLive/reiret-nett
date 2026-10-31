@@ -50,4 +50,5 @@ document.addEventListener('click', (e) => {
   const lenke = mal?.closest('a[href]')?.getAttribute('href') ?? '';
   if (lenke.includes('tiktok.com')) tell('tiktok');
   if (lenke.includes('apps.apple.com')) tell('app-store');
+  if (lenke.includes('play.google.com')) tell('google-play');
 });
